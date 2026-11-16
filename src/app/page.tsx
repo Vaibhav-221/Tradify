@@ -20,20 +20,14 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 const features = [
   {
     icon: Search,
     title: "Find what you need",
-    description:
-      "Search through items listed by students across your campus.",
+    description: "Search through items listed by students across your campus.",
   },
   {
     icon: Tag,
@@ -84,8 +78,7 @@ const steps = [
   {
     number: "02",
     title: "Discover or list",
-    description:
-      "Find something useful or list an item you no longer need.",
+    description: "Find something useful or list an item you no longer need.",
   },
   {
     number: "03",
@@ -106,9 +99,7 @@ export default function Home() {
               <Sparkles className="h-4 w-4" />
             </div>
 
-            <span className="text-lg font-bold tracking-tight">
-              Unexa
-            </span>
+            <span className="text-lg font-bold tracking-tight">Unexa</span>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -163,23 +154,16 @@ export default function Home() {
             <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
               Your campus.
               <br />
-              <span className="text-muted-foreground">
-                Your marketplace.
-              </span>
+              <span className="text-muted-foreground">Your marketplace.</span>
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-muted-foreground sm:text-lg">
-              Buy, sell, exchange, or give away things with students
-              around you. Unexa makes campus commerce simple, local,
-              and trusted.
+              Buy, sell, exchange, or give away things with students around you.
+              Unexa makes campus commerce simple, local, and trusted.
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="w-full px-7 sm:w-auto"
-              >
+              <Button asChild size="lg" className="w-full px-7 sm:w-auto">
                 <Link href="/login">
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -250,14 +234,10 @@ export default function Home() {
                       </div>
 
                       <CardContent className="p-4">
-                        <p className="truncate text-sm font-medium">
-                          {name}
-                        </p>
+                        <p className="truncate text-sm font-medium">{name}</p>
 
                         <div className="mt-2 flex items-center justify-between">
-                          <span className="text-sm font-semibold">
-                            {price}
-                          </span>
+                          <span className="text-sm font-semibold">{price}</span>
 
                           <span className="text-[11px] text-muted-foreground">
                             {category}
@@ -289,8 +269,8 @@ export default function Home() {
             </h2>
 
             <p className="mt-4 text-muted-foreground">
-              Whether you're looking for something or getting rid of
-              something, Unexa keeps the entire process simple.
+              Whether you're looking for something or getting rid of something,
+              Unexa keeps the entire process simple.
             </p>
           </div>
 
@@ -308,9 +288,7 @@ export default function Home() {
                       <Icon className="h-5 w-5 text-primary" />
                     </div>
 
-                    <CardTitle className="text-base">
-                      {feature.title}
-                    </CardTitle>
+                    <CardTitle className="text-base">{feature.title}</CardTitle>
                   </CardHeader>
 
                   <CardContent>
@@ -359,9 +337,7 @@ export default function Home() {
                       <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
                     </div>
 
-                    <p className="text-sm font-medium">
-                      {category.title}
-                    </p>
+                    <p className="text-sm font-medium">{category.title}</p>
                   </CardContent>
                 </Card>
               );
@@ -386,8 +362,8 @@ export default function Home() {
               </h2>
 
               <p className="mt-5 max-w-md leading-7 text-muted-foreground">
-                No complicated process. Find something, connect with
-                another student, and make it happen on campus.
+                No complicated process. Find something, connect with another
+                student, and make it happen on campus.
               </p>
 
               <Button asChild className="mt-7">
@@ -400,19 +376,14 @@ export default function Home() {
 
             <div className="space-y-4">
               {steps.map((step) => (
-                <Card
-                  key={step.number}
-                  className="border-border/60 bg-card/50"
-                >
+                <Card key={step.number} className="border-border/60 bg-card/50">
                   <CardContent className="flex gap-5 p-6 sm:p-7">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-xs font-semibold text-muted-foreground">
                       {step.number}
                     </div>
 
                     <div>
-                      <h3 className="font-semibold">
-                        {step.title}
-                      </h3>
+                      <h3 className="font-semibold">{step.title}</h3>
 
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">
                         {step.description}
@@ -442,18 +413,16 @@ export default function Home() {
                   </h2>
 
                   <p className="mt-4 max-w-xl leading-7 text-muted-foreground">
-                    Unexa is designed around local student-to-student
-                    exchanges, making it easier to discover items close
-                    to you and connect with people from your campus.
+                    Unexa is designed around local student-to-student exchanges,
+                    making it easier to discover items close to you and connect
+                    with people from your campus.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl border border-border/60 bg-muted/30 p-5">
                     <Users className="mb-3 h-5 w-5 text-primary" />
-                    <p className="text-sm font-semibold">
-                      Student focused
-                    </p>
+                    <p className="text-sm font-semibold">Student focused</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Built around campus life.
                     </p>
@@ -461,9 +430,7 @@ export default function Home() {
 
                   <div className="rounded-xl border border-border/60 bg-muted/30 p-5">
                     <CircleDollarSign className="mb-3 h-5 w-5 text-primary" />
-                    <p className="text-sm font-semibold">
-                      Better value
-                    </p>
+                    <p className="text-sm font-semibold">Better value</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Buy and sell locally.
                     </p>
@@ -471,9 +438,7 @@ export default function Home() {
 
                   <div className="rounded-xl border border-border/60 bg-muted/30 p-5">
                     <Repeat2 className="mb-3 h-5 w-5 text-primary" />
-                    <p className="text-sm font-semibold">
-                      Easy exchange
-                    </p>
+                    <p className="text-sm font-semibold">Easy exchange</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Trade with students.
                     </p>
@@ -481,9 +446,7 @@ export default function Home() {
 
                   <div className="rounded-xl border border-border/60 bg-muted/30 p-5">
                     <ShieldCheck className="mb-3 h-5 w-5 text-primary" />
-                    <p className="text-sm font-semibold">
-                      Campus first
-                    </p>
+                    <p className="text-sm font-semibold">Campus first</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Local by design.
                     </p>
@@ -513,8 +476,7 @@ export default function Home() {
           </h2>
 
           <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
-            Join Unexa and start discovering what your campus has to
-            offer.
+            Join Unexa and start discovering what your campus has to offer.
           </p>
 
           <Button asChild size="lg" className="mt-8 px-8">
@@ -542,7 +504,7 @@ export default function Home() {
           </p>
 
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Unexa
+            <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Unexa</p>
           </p>
         </div>
       </footer>
