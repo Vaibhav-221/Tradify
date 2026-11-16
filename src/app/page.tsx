@@ -99,7 +99,7 @@ export default function Home() {
               <Sparkles className="h-4 w-4" />
             </div>
 
-            <span className="text-lg font-bold tracking-tight">Unexa</span>
+            <span className="text-lg font-bold tracking-tight">Tradify</span>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -118,10 +118,10 @@ export default function Home() {
             </Link>
 
             <Link
-              href="#why-unexa"
+              href="#why-Tradify"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              Why Unexa
+              Why Tradify
             </Link>
           </nav>
 
@@ -159,7 +159,7 @@ export default function Home() {
 
             <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-muted-foreground sm:text-lg">
               Buy, sell, exchange, or give away things with students around you.
-              Unexa makes campus commerce simple, local, and trusted.
+              Tradify makes campus commerce simple, local, and trusted.
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -256,7 +256,7 @@ export default function Home() {
       <Separator />
 
       {/* Features */}
-      <section id="why-unexa" className="py-20 sm:py-28">
+      <section id="why-Tradify" className="py-20 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <Badge variant="outline" className="mb-4">
@@ -270,7 +270,7 @@ export default function Home() {
 
             <p className="mt-4 text-muted-foreground">
               Whether you're looking for something or getting rid of something,
-              Unexa keeps the entire process simple.
+              Tradify keeps the entire process simple.
             </p>
           </div>
 
@@ -413,7 +413,7 @@ export default function Home() {
                   </h2>
 
                   <p className="mt-4 max-w-xl leading-7 text-muted-foreground">
-                    Unexa is designed around local student-to-student exchanges,
+                    Tradify is designed around local student-to-student exchanges,
                     making it easier to discover items close to you and connect
                     with people from your campus.
                   </p>
@@ -476,7 +476,7 @@ export default function Home() {
           </h2>
 
           <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
-            Join Unexa and start discovering what your campus has to offer.
+            Join Tradify and start discovering what your campus has to offer.
           </p>
 
           <Button asChild size="lg" className="mt-8 px-8">
@@ -496,7 +496,7 @@ export default function Home() {
               <Sparkles className="h-3.5 w-3.5" />
             </div>
 
-            <span className="text-sm font-semibold">Unexa</span>
+            <span className="text-sm font-semibold">Tradify</span>
           </div>
 
           <p className="text-xs text-muted-foreground">
@@ -504,7 +504,7 @@ export default function Home() {
           </p>
 
           <p className="text-xs text-muted-foreground">
-            <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Unexa</p>
+            2026 &copy; Tradify. All rights reserved.
           </p>
         </div>
       </footer>
