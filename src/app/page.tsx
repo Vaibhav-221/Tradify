@@ -367,11 +367,11 @@ export default function Home() {
               return (
                 <Card
                   key={category.title}
-                  className="group cursor-pointer border-white/[0.07] bg-card/50 transition-all duration-200 hover:-translate-y-1 hover:border-primary/30 hover:bg-card"
+                  className="border-white/[0.07] bg-card/50"
                 >
                   <CardContent className="flex flex-col items-center justify-center p-7 text-center">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.035] transition-colors group-hover:bg-primary/10">
-                      <Icon className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary" />
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.035]">
+                      <Icon className="h-5 w-5 text-muted-foreground" />
                     </div>
 
                     <p className="text-sm font-medium tracking-tight">

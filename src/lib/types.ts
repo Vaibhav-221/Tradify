@@ -23,6 +23,7 @@ export interface Listing {
   category: string;
   type: ListingType;
   price?: number;
+  exchangeFor?: string;
   condition: Condition;
   hostel: string;
   image?: string;

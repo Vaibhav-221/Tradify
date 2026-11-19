@@ -32,6 +32,7 @@ export default function CreateListingPage() {
   const [checkingSession, setCheckingSession] = useState(true);
   const [type, setType] = useState<ListingType>("sell");
   const [published, setPublished] = useState(false);
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     const session = getCurrentUser();
@@ -51,20 +52,48 @@ export default function CreateListingPage() {
     if (!user) return;
 
     const formData = new FormData(event.currentTarget);
-    const priceValue = formData.get("price")?.toString();
+    const textField = (name: string) => {
+      const value = formData.get(name);
+      return typeof value === "string" ? value.trim() : "";
+    };
+    const title = textField("title");
+    const description = textField("description");
+    const category = textField("category");
+    const condition = conditions.find(
+      (option) => option.value === textField("condition"),
+    )?.value;
+    const hostel = textField("hostel");
+    const exchangeFor = textField("exchangeFor");
+    const priceValue = textField("price");
+    const price = priceValue ? Number(priceValue) : undefined;
+
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !condition ||
+      !hostel ||
+      (type === "exchange" && !exchangeFor) ||
+      (type === "sell" &&
+        (price === undefined || !Number.isFinite(price) || price <= 0))
+    ) {
+      setFormError("Please complete the required fields with valid values.");
+      return;
+    }
+
+    setFormError("");
 
     addListing({
       id: crypto.randomUUID(),
       sellerId: user.id,
-      title: formData.get("title")!.toString().trim(),
-      description: formData.get("description")!.toString().trim(),
-      category: formData.get("category")!.toString(),
+      title,
+      description,
+      category,
       type,
-      ...(type === "sell" && priceValue
-        ? { price: Number(priceValue) }
-        : {}),
-      condition: formData.get("condition")!.toString() as Condition,
-      hostel: formData.get("hostel")!.toString().trim(),
+      ...(type === "sell" && price !== undefined ? { price } : {}),
+      ...(type === "exchange" ? { exchangeFor } : {}),
+      condition,
+      hostel,
       status: "available",
       createdAt: new Date().toISOString(),
     });
@@ -202,6 +231,22 @@ export default function CreateListingPage() {
                 </div>
               ) : null}
 
+              {type === "exchange" ? (
+                <div className="space-y-2">
+                  <label htmlFor="exchangeFor" className="text-sm font-medium">
+                    What are you looking for in exchange?
+                  </label>
+                  <input
+                    id="exchangeFor"
+                    name="exchangeFor"
+                    required
+                    maxLength={120}
+                    placeholder="e.g. A desk lamp or study supplies"
+                    className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none placeholder:text-muted-foreground/50 focus:border-primary/50"
+                  />
+                </div>
+              ) : null}
+
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="condition" className="text-sm font-medium">
@@ -252,6 +297,15 @@ export default function CreateListingPage() {
                   className="w-full resize-y rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm outline-none placeholder:text-muted-foreground/50 focus:border-primary/50"
                 />
               </div>
+
+              {formError ? (
+                <p
+                  role="alert"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-red-300"
+                >
+                  {formError}
+                </p>
+              ) : null}
 
               <Button type="submit" className="w-full sm:w-auto">
                 Publish listing

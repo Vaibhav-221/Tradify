@@ -87,21 +87,15 @@ export default function HomePage() {
           </h1>
         </div>
 
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-          <input
-            aria-label="Search marketplace"
-            placeholder="Search for books, electronics, furniture..."
-            className="h-14 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-12 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50"
-          />
-        </div>
-
-        <div className="mt-10 rounded-2xl border border-white/[0.08] bg-card/50 p-8 text-center">
-          <h2 className="text-lg font-semibold">Marketplace coming next</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Your session is active. Listings and marketplace filters will be
-            added in Milestone 2.
-          </p>
+        <div className="mt-10 flex items-start gap-4 rounded-2xl border border-white/[0.08] bg-card/50 p-6">
+          <Search className="mt-1 h-5 w-5 shrink-0 text-muted-foreground" />
+          <div>
+            <h2 className="text-lg font-semibold">Marketplace coming next</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Your session is active. Listings, search, and filters will be
+              added in Milestone 2.
+            </p>
+          </div>
         </div>
       </section>
     </main>

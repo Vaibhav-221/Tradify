@@ -194,21 +194,8 @@ export default function LoginPage() {
               </form>
 
               <p className="pt-3 text-center text-xs leading-5 text-muted-foreground">
-                By continuing, you agree to Tradify&apos;s{" "}
-                <Link
-                  href="#"
-                  className="text-foreground underline underline-offset-4 hover:text-primary"
-                >
-                  Terms
-                </Link>{" "}
-                and{" "}
-                <Link
-                  href="#"
-                  className="text-foreground underline underline-offset-4 hover:text-primary"
-                >
-                  Privacy Policy
-                </Link>
-                .
+                This is a simulated sign-in. Do not use a real password or
+                sensitive credentials.
               </p>
             </CardContent>
           </Card>
