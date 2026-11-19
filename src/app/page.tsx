@@ -45,7 +45,7 @@ const features = [
     icon: Repeat2,
     title: "Exchange easily",
     description:
-      "Have something to trade? Find students looking for exactly that.",
+      "      Have something to trade? Find students looking for exactly that.",
   },
   {
     icon: Heart,
@@ -301,7 +301,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-5 max-w-xl leading-7 text-muted-foreground">
-              Whether you're looking for something or getting rid of
+              Whether you&apos;re looking for something or getting rid of
               something, Tradify keeps the entire process simple.
             </p>
           </div>
