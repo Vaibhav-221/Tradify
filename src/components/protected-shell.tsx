@@ -28,10 +28,20 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
   }, [ready, user, router]);
 
   useEffect(() => {
-    const activeLink = mobileNavigationRef.current?.querySelector<HTMLElement>(
-      '[aria-current="page"]',
-    );
-    activeLink?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    const navigationElement = mobileNavigationRef.current;
+    const activeLink =
+      navigationElement?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!navigationElement || !activeLink || !navigationElement.clientWidth) {
+      return;
+    }
+
+    const navigationBounds = navigationElement.getBoundingClientRect();
+    const activeBounds = activeLink.getBoundingClientRect();
+    if (activeBounds.left < navigationBounds.left) {
+      navigationElement.scrollLeft += activeBounds.left - navigationBounds.left;
+    } else if (activeBounds.right > navigationBounds.right) {
+      navigationElement.scrollLeft += activeBounds.right - navigationBounds.right;
+    }
   }, [pathname, ready, user]);
 
   if (!ready || !user) {
