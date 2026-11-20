@@ -80,7 +80,7 @@ export default function HomePage() {
           className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50"
         />
 
-        <div className="mt-5 flex gap-2 overflow-x-auto pb-2">
+        <div className="scrollbar-none mt-5 flex gap-2 overflow-x-auto pb-2">
           {["All", ...LISTING_CATEGORIES].map((item) => (
             <Button
               key={item}

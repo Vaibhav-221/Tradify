@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { LogOut, Plus, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -21,10 +21,18 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const { ready, user, logout, notify } = usePrototype();
+  const mobileNavigationRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (ready && !user) router.replace("/login");
   }, [ready, user, router]);
+
+  useEffect(() => {
+    const activeLink = mobileNavigationRef.current?.querySelector<HTMLElement>(
+      '[aria-current="page"]',
+    );
+    activeLink?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [pathname, ready, user]);
 
   if (!ready || !user) {
     return (
@@ -78,8 +86,13 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
               {user.name}
             </span>
             <Button asChild size="sm" className="rounded-lg">
-              <Link href="/create-listing">
+              <Link
+                href="/create-listing"
+                aria-label="Create Listing"
+                title="Create Listing"
+              >
                 <Plus className="h-4 w-4" />
+                <span className="sm:hidden">List</span>
                 <span className="hidden sm:inline">Create Listing</span>
               </Link>
             </Button>
@@ -96,8 +109,9 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
           </div>
         </div>
         <nav
+          ref={mobileNavigationRef}
           aria-label="Mobile navigation"
-          className="flex gap-1 overflow-x-auto border-t border-white/[0.06] px-4 py-2 lg:hidden"
+          className="scrollbar-none flex gap-1 overflow-x-auto border-t border-white/[0.06] px-4 py-2 lg:hidden"
         >
           {navigation.map((item) => (
             <Link
