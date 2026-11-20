@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 
 import { ListingCard } from "@/components/listing-card";
 import { ProtectedShell } from "@/components/protected-shell";
@@ -17,6 +17,7 @@ export default function HomePage() {
   const [type, setType] = useState("all");
   const [condition, setCondition] = useState("all");
   const [hostel, setHostel] = useState("all");
+  const [filtersExpanded, setFiltersExpanded] = useState(true);
   const hostels = useMemo(
     () => [...new Set(listings.map((listing) => listing.hostel))].sort(),
     [listings],
@@ -72,88 +73,115 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="min-w-0">
-            <label
-              htmlFor="category-filter"
-              className="mb-1 block text-xs text-muted-foreground"
+        <div className="mt-3">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-medium text-muted-foreground">Filters</p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={filtersExpanded ? "Collapse filters" : "Expand filters"}
+              aria-expanded={filtersExpanded}
+              aria-controls="marketplace-filters"
+              onClick={() => setFiltersExpanded((expanded) => !expanded)}
+              className="size-8"
             >
-              Category
-            </label>
-            <select
-              id="category-filter"
-              value={category}
-              onChange={(event) => setCategory(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-            >
-              <option value="All">All Categories</option>
-              {LISTING_CATEGORIES.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+              <ChevronDown
+                aria-hidden="true"
+                className={`h-4 w-4 transition-transform ${filtersExpanded ? "rotate-180" : ""}`}
+              />
+            </Button>
           </div>
-          <div className="min-w-0">
-            <label
-              htmlFor="listing-type-filter"
-              className="mb-1 block text-xs text-muted-foreground"
-            >
-              Listing type
-            </label>
-            <select
-              id="listing-type-filter"
-              value={type}
-              onChange={(event) => setType(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-            >
-              <option value="all">All Types</option>
-              <option value="sell">Sell</option>
-              <option value="giveaway">Give Away</option>
-              <option value="exchange">Exchange</option>
-            </select>
-          </div>
-          <div className="min-w-0">
-            <label
-              htmlFor="condition-filter"
-              className="mb-1 block text-xs text-muted-foreground"
-            >
-              Condition
-            </label>
-            <select
-              id="condition-filter"
-              value={condition}
-              onChange={(event) => setCondition(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-            >
-              <option value="all">Any Condition</option>
-              {CONDITIONS.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="min-w-0">
-            <label
-              htmlFor="hostel-filter"
-              className="mb-1 block text-xs text-muted-foreground"
-            >
-              Location
-            </label>
-            <select
-              id="hostel-filter"
-              value={hostel}
-              onChange={(event) => setHostel(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-            >
-              <option value="all">All Locations</option>
-              {hostels.map((location) => (
-                <option key={location} value={location}>
-                  {location}
-                </option>
-              ))}
-            </select>
+          <div
+            id="marketplace-filters"
+            className={
+              filtersExpanded
+                ? "mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4"
+                : "hidden"
+            }
+          >
+            <div className="min-w-0">
+              <label
+                htmlFor="category-filter"
+                className="mb-1 block text-xs text-muted-foreground"
+              >
+                Category
+              </label>
+              <select
+                id="category-filter"
+                value={category}
+                onChange={(event) => setCategory(event.target.value)}
+                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
+              >
+                <option value="All">All Categories</option>
+                {LISTING_CATEGORIES.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="min-w-0">
+              <label
+                htmlFor="listing-type-filter"
+                className="mb-1 block text-xs text-muted-foreground"
+              >
+                Listing type
+              </label>
+              <select
+                id="listing-type-filter"
+                value={type}
+                onChange={(event) => setType(event.target.value)}
+                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
+              >
+                <option value="all">All Types</option>
+                <option value="sell">Sell</option>
+                <option value="giveaway">Give Away</option>
+                <option value="exchange">Exchange</option>
+              </select>
+            </div>
+            <div className="min-w-0">
+              <label
+                htmlFor="condition-filter"
+                className="mb-1 block text-xs text-muted-foreground"
+              >
+                Condition
+              </label>
+              <select
+                id="condition-filter"
+                value={condition}
+                onChange={(event) => setCondition(event.target.value)}
+                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
+              >
+                <option value="all">Any Condition</option>
+                {CONDITIONS.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="min-w-0">
+              <label
+                htmlFor="hostel-filter"
+                className="mb-1 block text-xs text-muted-foreground"
+              >
+                Location
+              </label>
+              <select
+                id="hostel-filter"
+                value={hostel}
+                onChange={(event) => setHostel(event.target.value)}
+                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
+              >
+                <option value="all">All Locations</option>
+                {hostels.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
