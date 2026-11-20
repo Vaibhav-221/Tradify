@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export function BrandLogo({ className }: { className?: string }) {
   return (
     <Image
-      src="/Tradifylogo.jpg"
+      src="/Tradifylogo.png"
       alt=""
       width={1280}
       height={1440}
