@@ -10,7 +10,7 @@ export function BrandLogo({ className }: { className?: string }) {
       width={1280}
       height={1440}
       sizes="48px"
-      className={cn("shrink-0 object-contain", className)}
+      className={cn("shrink-0 object-contain mix-blend-screen", className)}
     />
   );
 }
