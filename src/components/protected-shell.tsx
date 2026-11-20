@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
-import { LogOut, Plus } from "lucide-react";
+import { CircleUserRound, Plus } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
@@ -14,14 +14,13 @@ const navigation = [
   { href: "/my-listings", label: "My Listings" },
   { href: "/wishlist", label: "Wishlist" },
   { href: "/looking-for", label: "Looking For" },
-  { href: "/profile", label: "Profile" },
   { href: "/admin", label: "Admin" },
 ];
 
 export function ProtectedShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { ready, user, logout, notify } = usePrototype();
+  const { ready, user } = usePrototype();
   const mobileNavigationRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -51,12 +50,6 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
         <p className="text-sm text-muted-foreground">Loading your workspace...</p>
       </main>
     );
-  }
-
-  function handleLogout() {
-    logout();
-    notify("You have been logged out.");
-    router.replace("/login");
   }
 
   return (
@@ -106,14 +99,19 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
               </Link>
             </Button>
             <Button
-              variant="ghost"
+              asChild
+              variant={pathname === "/profile" ? "secondary" : "ghost"}
               size="icon"
-              onClick={handleLogout}
-              aria-label="Log out"
-              title="Log out"
-              className="text-muted-foreground"
             >
-              <LogOut className="h-4 w-4" />
+              <Link
+                href="/profile"
+                aria-current={pathname === "/profile" ? "page" : undefined}
+                aria-label="Profile"
+                title="Profile"
+                className="text-muted-foreground"
+              >
+                <CircleUserRound className="h-4 w-4" />
+              </Link>
             </Button>
           </div>
         </div>

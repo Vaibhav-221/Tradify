@@ -1,24 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { Camera, Pencil, UserRound, X } from "lucide-react";
+import { Camera, LogOut, Pencil, UserRound, X } from "lucide-react";
 
+import { Modal } from "@/components/modal";
 import { ProtectedShell } from "@/components/protected-shell";
 import { usePrototype } from "@/components/prototype-provider";
 import { Button } from "@/components/ui/button";
 import { readImageFile } from "@/lib/image";
 
 export default function ProfilePage() {
+  const router = useRouter();
   const {
     user,
     listings,
     wishlist,
     lookingForRequests,
     updateUser,
+    logout,
     notify,
   } = usePrototype();
   const [editing, setEditing] = useState(false);
+  const [logoutConfirmationOpen, setLogoutConfirmationOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null | undefined>(
     undefined,
   );
@@ -108,6 +113,12 @@ export default function ProfilePage() {
     setEditing(false);
     setProfileImage(undefined);
     setImageError("");
+  }
+
+  function confirmLogout() {
+    logout();
+    notify("You have been logged out.");
+    router.replace("/login");
   }
 
   const avatar = profileImage === null ? undefined : profileImage ?? user.profileImage;
@@ -287,7 +298,49 @@ export default function ProfilePage() {
             </div>
           </div>
         )}
+
+        <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/[0.08] bg-card/50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div>
+            <h2 className="font-semibold">Account</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Log out of Tradify on this device.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={() => setLogoutConfirmationOpen(true)}
+            className="self-start sm:self-auto"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Log out
+          </Button>
+        </div>
       </section>
+      {logoutConfirmationOpen ? (
+        <Modal
+          title="Log out?"
+          onClose={() => setLogoutConfirmationOpen(false)}
+          footer={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setLogoutConfirmationOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="button" variant="destructive" onClick={confirmLogout}>
+                Log out
+              </Button>
+            </>
+          }
+        >
+          <p className="text-sm text-muted-foreground">
+            Are you sure you want to log out of Tradify on this device?
+          </p>
+        </Modal>
+      ) : null}
     </ProtectedShell>
   );
 }
