@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -21,14 +21,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { setCurrentUser } from "@/lib/storage";
+import { usePrototype } from "@/components/prototype-provider";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { ready, user, login } = usePrototype();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (ready && user) router.replace("/home");
+  }, [ready, user, router]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,18 +57,21 @@ export default function LoginPage() {
     }
 
     const isEmail = trimmedIdentifier.includes("@");
-    setCurrentUser({
-      id: "user-001",
-      name: "Vaibhav Singh",
-      email: isEmail ? trimmedIdentifier : "student@college.edu",
-      studentId: isEmail ? "STU001" : trimmedIdentifier,
-      branch: "Computer Science & Engineering",
-      year: "3rd Year",
-      hostel: "Hostel A",
-      loggedIn: true,
-    });
-
-    router.push("/home");
+    try {
+      login({
+        id: "user-001",
+        name: "Vaibhav Singh",
+        email: isEmail ? trimmedIdentifier : "student@college.edu",
+        studentId: isEmail ? "STU001" : trimmedIdentifier,
+        branch: "Computer Science & Engineering",
+        year: "3rd Year",
+        hostel: "Hostel A",
+        loggedIn: true,
+      });
+      router.push("/home");
+    } catch {
+      setError("Unable to save the demo session. Check browser storage and try again.");
+    }
   }
 
   return (

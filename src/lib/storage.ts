@@ -1,10 +1,20 @@
-import type { Listing, LookingForRequest, UserSession } from "./types";
+import type {
+  Listing,
+  ListingAction,
+  ListingReport,
+  LookingForRequest,
+  UserSession,
+} from "./types";
+import { INITIAL_LISTINGS } from "./mock-data";
 
 export const STORAGE_KEYS = {
   session: "tradify_session",
+  profile: "tradify_profile",
   listings: "tradify_listings",
   wishlist: "tradify_wishlist",
   lookingFor: "tradify_looking_for",
+  listingActions: "tradify_listing_actions",
+  reports: "tradify_reports",
 } as const;
 
 function readJson<T>(key: string, fallback: T): T {
@@ -27,8 +37,43 @@ export function getCurrentUser(): UserSession | null {
   return readJson<UserSession | null>(STORAGE_KEYS.session, null);
 }
 
-export function setCurrentUser(user: UserSession): void {
+function persistUser(user: UserSession): void {
+  const profile = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    studentId: user.studentId,
+    phone: user.phone,
+    branch: user.branch,
+    year: user.year,
+    hostel: user.hostel,
+    bio: user.bio,
+    profileImage: user.profileImage,
+  };
+  writeJson(STORAGE_KEYS.profile, profile);
   writeJson(STORAGE_KEYS.session, user);
+}
+
+export function setCurrentUser(user: UserSession): UserSession {
+  const savedProfile = readJson<Partial<UserSession> | null>(
+    STORAGE_KEYS.profile,
+    null,
+  );
+  const updatedUser = {
+    ...user,
+    ...(savedProfile?.id === user.id ? savedProfile : {}),
+    loggedIn: true as const,
+  };
+  persistUser(updatedUser);
+  return updatedUser;
+}
+
+export function updateCurrentUser(updates: Partial<UserSession>): UserSession | null {
+  const user = getCurrentUser();
+  if (!user) return null;
+  const updatedUser = { ...user, ...updates };
+  persistUser(updatedUser);
+  return updatedUser;
 }
 
 export function logoutUser(): void {
@@ -37,7 +82,14 @@ export function logoutUser(): void {
 }
 
 export function getListings(): Listing[] {
-  return readJson<Listing[]>(STORAGE_KEYS.listings, []);
+  const existing = readJson<Listing[] | null>(STORAGE_KEYS.listings, null);
+  if (existing) return existing;
+  saveListings(INITIAL_LISTINGS);
+  return INITIAL_LISTINGS;
+}
+
+export function getListing(listingId: string): Listing | undefined {
+  return getListings().find((listing) => listing.id === listingId);
 }
 
 export function saveListings(listings: Listing[]): void {
@@ -64,6 +116,10 @@ export function updateListing(
 export function deleteListing(listingId: string): Listing[] {
   const listings = getListings().filter((listing) => listing.id !== listingId);
   saveListings(listings);
+  saveWishlist(getWishlist().filter((id) => id !== listingId));
+  saveListingActions(
+    getListingActions().filter((action) => action.listingId !== listingId),
+  );
   return listings;
 }
 
@@ -92,4 +148,44 @@ export function saveLookingForRequests(
   requests: LookingForRequest[],
 ): void {
   writeJson(STORAGE_KEYS.lookingFor, requests);
+}
+
+export function addLookingForRequest(
+  request: LookingForRequest,
+): LookingForRequest[] {
+  const requests = [request, ...getLookingForRequests()];
+  saveLookingForRequests(requests);
+  return requests;
+}
+
+export function deleteLookingForRequest(requestId: string): LookingForRequest[] {
+  const requests = getLookingForRequests().filter(
+    (request) => request.id !== requestId,
+  );
+  saveLookingForRequests(requests);
+  return requests;
+}
+
+export function getListingActions(): ListingAction[] {
+  return readJson<ListingAction[]>(STORAGE_KEYS.listingActions, []);
+}
+
+export function saveListingActions(actions: ListingAction[]): void {
+  writeJson(STORAGE_KEYS.listingActions, actions);
+}
+
+export function addListingAction(action: ListingAction): ListingAction[] {
+  const actions = [action, ...getListingActions()];
+  saveListingActions(actions);
+  return actions;
+}
+
+export function getReports(): ListingReport[] {
+  return readJson<ListingReport[]>(STORAGE_KEYS.reports, []);
+}
+
+export function addReport(report: ListingReport): ListingReport[] {
+  const reports = [report, ...getReports()];
+  writeJson(STORAGE_KEYS.reports, reports);
+  return reports;
 }
