@@ -10,9 +10,9 @@ import {
   EyeOff,
   LockKeyhole,
   Mail,
-  Sparkles,
 } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -87,9 +87,7 @@ export default function LoginPage() {
       <header className="absolute left-0 right-0 top-0 z-10">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="group flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.07] transition-colors group-hover:bg-white/[0.12]">
-              <Sparkles className="h-4 w-4 text-primary" />
-            </div>
+            <BrandLogo className="h-9 w-8" />
 
             <span className="text-[17px] font-semibold tracking-[-0.02em]">
               Tradify
@@ -111,7 +109,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
             <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] shadow-lg">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <BrandLogo className="h-10 w-9" />
             </div>
 
             <h1 className="text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">

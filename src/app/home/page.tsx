@@ -2,18 +2,16 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 
 import { ListingCard } from "@/components/listing-card";
 import { ProtectedShell } from "@/components/protected-shell";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/components/prototype-provider";
-import {
-  CONDITIONS,
-  LISTING_CATEGORIES,
-} from "@/lib/marketplace";
+import { CONDITIONS, LISTING_CATEGORIES } from "@/lib/marketplace";
 
 export default function HomePage() {
-  const { user, listings } = usePrototype();
+  const { listings } = usePrototype();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [type, setType] = useState("all");
@@ -40,7 +38,7 @@ export default function HomePage() {
     ].some((value) => value.toLocaleLowerCase().includes(normalizedSearch));
   });
   const hasFilters =
-    search.length > 0 ||
+    normalizedSearch.length > 0 ||
     category !== "All" ||
     type !== "all" ||
     condition !== "all" ||
@@ -56,51 +54,50 @@ export default function HomePage() {
 
   return (
     <ProtectedShell>
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <p className="mb-2 text-sm text-primary">
-            Welcome back, {user?.name}
-          </p>
-          <h1 className="text-4xl font-semibold tracking-[-0.04em]">
-            Find what you need on campus.
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
-            Discover items shared by students in your campus community.
-          </p>
+      <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+        <div className="relative">
+          <label className="sr-only" htmlFor="marketplace-search">
+            Search listings
+          </label>
+          <Search
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            id="marketplace-search"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search listings by name, category, location..."
+            className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-10 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/50"
+          />
         </div>
 
-        <label className="sr-only" htmlFor="marketplace-search">
-          Search listings
-        </label>
-        <input
-          id="marketplace-search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search by name, category, location, or description..."
-          className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50"
-        />
-
-        <div className="scrollbar-none mt-5 flex gap-2 overflow-x-auto pb-2">
-          {["All", ...LISTING_CATEGORIES].map((item) => (
-            <Button
-              key={item}
-              type="button"
-              size="sm"
-              variant={category === item ? "secondary" : "outline"}
-              aria-pressed={category === item}
-              onClick={() => setCategory(item)}
-              className="shrink-0 border-white/10"
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="min-w-0">
+            <label
+              htmlFor="category-filter"
+              className="mb-1 block text-xs text-muted-foreground"
             >
-              {item}
-            </Button>
-          ))}
-        </div>
-
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          <div>
+              Category
+            </label>
+            <select
+              id="category-filter"
+              value={category}
+              onChange={(event) => setCategory(event.target.value)}
+              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
+            >
+              <option value="All">All Categories</option>
+              {LISTING_CATEGORIES.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="min-w-0">
             <label
               htmlFor="listing-type-filter"
-              className="mb-1.5 block text-xs text-muted-foreground"
+              className="mb-1 block text-xs text-muted-foreground"
             >
               Listing type
             </label>
@@ -108,18 +105,18 @@ export default function HomePage() {
               id="listing-type-filter"
               value={type}
               onChange={(event) => setType(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
             >
-              <option value="all">All types</option>
-              <option value="sell">For sale</option>
-              <option value="giveaway">Give away</option>
+              <option value="all">All Types</option>
+              <option value="sell">Sell</option>
+              <option value="giveaway">Give Away</option>
               <option value="exchange">Exchange</option>
             </select>
           </div>
-          <div>
+          <div className="min-w-0">
             <label
               htmlFor="condition-filter"
-              className="mb-1.5 block text-xs text-muted-foreground"
+              className="mb-1 block text-xs text-muted-foreground"
             >
               Condition
             </label>
@@ -127,9 +124,9 @@ export default function HomePage() {
               id="condition-filter"
               value={condition}
               onChange={(event) => setCondition(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
             >
-              <option value="all">Any condition</option>
+              <option value="all">Any Condition</option>
               {CONDITIONS.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -137,10 +134,10 @@ export default function HomePage() {
               ))}
             </select>
           </div>
-          <div>
+          <div className="min-w-0">
             <label
               htmlFor="hostel-filter"
-              className="mb-1.5 block text-xs text-muted-foreground"
+              className="mb-1 block text-xs text-muted-foreground"
             >
               Location
             </label>
@@ -148,9 +145,9 @@ export default function HomePage() {
               id="hostel-filter"
               value={hostel}
               onChange={(event) => setHostel(event.target.value)}
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+              className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
             >
-              <option value="all">All locations</option>
+              <option value="all">All Locations</option>
               {hostels.map((location) => (
                 <option key={location} value={location}>
                   {location}
@@ -160,12 +157,12 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mb-5 mt-10 flex items-end justify-between gap-4">
+        <div className="mb-4 mt-6 flex items-end justify-between gap-3 sm:mt-7">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
               Campus listings
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            </h1>
+            <p className="mt-0.5 text-sm text-muted-foreground">
               {filteredListings.length}{" "}
               {filteredListings.length === 1 ? "item" : "items"} available
             </p>
@@ -176,6 +173,7 @@ export default function HomePage() {
               variant="ghost"
               size="sm"
               onClick={clearFilters}
+              className="h-8 shrink-0 px-2 text-xs"
             >
               Clear filters
             </Button>
@@ -183,18 +181,18 @@ export default function HomePage() {
         </div>
 
         {filteredListings.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredListings.map((listing) => (
               <ListingCard key={listing.id} listing={listing} />
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-12 text-center">
-            <h3 className="font-semibold">
+          <div className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-10 text-center">
+            <h2 className="font-semibold">
               {listings.some((listing) => listing.status === "available")
                 ? "No listings match your filters"
                 : "No listings yet"}
-            </h3>
+            </h2>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
               {listings.some((listing) => listing.status === "available")
                 ? "Try a different search or clear the selected filters."

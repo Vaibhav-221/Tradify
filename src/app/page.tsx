@@ -18,6 +18,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -108,9 +109,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-background/75 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="group flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.07] shadow-sm transition-colors group-hover:bg-white/[0.12]">
-              <Sparkles className="h-4 w-4 text-primary" />
-            </div>
+            <BrandLogo className="h-9 w-8" />
 
             <span className="text-[17px] font-semibold tracking-[-0.02em]">
               Tradify
@@ -546,9 +545,7 @@ export default function Home() {
       <footer className="border-t border-white/[0.07]">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/[0.07]">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-            </div>
+            <BrandLogo className="h-7 w-6" />
 
             <span className="text-sm font-semibold">Tradify</span>
           </div>

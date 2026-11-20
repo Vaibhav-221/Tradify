@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
-import { LogOut, Plus, Sparkles } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/components/prototype-provider";
 
@@ -63,9 +64,7 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link href="/home" className="flex shrink-0 items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.07]">
-              <Sparkles className="h-4 w-4 text-primary" />
-            </div>
+            <BrandLogo className="h-9 w-8" />
             <span className="text-[17px] font-semibold tracking-[-0.02em]">
               Tradify
             </span>
