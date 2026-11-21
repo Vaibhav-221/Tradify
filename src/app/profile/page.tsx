@@ -252,7 +252,7 @@ export default function ProfilePage() {
                 JPG, PNG, or WebP up to 1 MB. Stored only in this browser.
               </p>
               {imageError ? (
-                <p role="alert" className="text-sm text-red-300">
+                <p role="alert" className="text-sm text-destructive">
                   {imageError}
                 </p>
               ) : null}

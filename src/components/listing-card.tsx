@@ -151,9 +151,9 @@ export function ListingCard({
             transition={{ duration: 0.2 }}
             className={`rounded-full px-2.5 py-1 text-[11px] ${
               listing.status === "available"
-                ? "bg-emerald-500/10 text-emerald-300"
+                ? "bg-[var(--status-success-bg)] text-[var(--status-success-text)]"
                 : listing.status === "reserved"
-                  ? "bg-amber-500/10 text-amber-300"
+                  ? "bg-[var(--status-warning-bg)] text-[var(--status-warning-text)]"
                   : "bg-secondary text-muted-foreground"
             }`}
           >

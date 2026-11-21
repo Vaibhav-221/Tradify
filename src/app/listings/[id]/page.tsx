@@ -45,7 +45,7 @@ export default function ListingDetailsPage() {
   return (
     <Suspense
       fallback={
-        <main className="dark flex min-h-screen items-center justify-center bg-background text-foreground">
+        <main className="flex min-h-screen items-center justify-center bg-background text-foreground">
           <p className="text-sm text-muted-foreground">Loading listing...</p>
         </main>
       }
@@ -219,9 +219,9 @@ function ListingDetailsContent() {
                 <span
                   className={`rounded-full px-3 py-1 text-xs ${
                     listing.status === "available"
-                      ? "bg-emerald-500/10 text-emerald-300"
+                      ? "bg-[var(--status-success-bg)] text-[var(--status-success-text)]"
                       : listing.status === "reserved"
-                        ? "bg-amber-500/10 text-amber-300"
+                        ? "bg-[var(--status-warning-bg)] text-[var(--status-warning-text)]"
                         : "bg-secondary text-muted-foreground"
                   }`}
                 >

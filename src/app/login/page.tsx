@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card";
 import { usePrototype } from "@/components/prototype-provider";
 import { Reveal } from "@/components/reveal";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -82,7 +83,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="dark relative min-h-screen overflow-hidden bg-background font-sans text-foreground">
+    <main className="relative min-h-screen overflow-hidden bg-background font-sans text-foreground">
       {/* Header */}
       <header className="absolute left-0 right-0 top-0 z-10">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -94,13 +95,16 @@ export default function LoginPage() {
             </span>
           </Link>
 
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to home
-          </Link>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to home
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -187,7 +191,7 @@ export default function LoginPage() {
                 {error ? (
                   <p
                     role="alert"
-                    className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-red-300"
+                    className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive"
                   >
                     {error}
                   </p>

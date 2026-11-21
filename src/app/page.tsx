@@ -30,6 +30,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Reveal } from "@/components/reveal";
 import { LandingMarketplacePreview } from "@/components/landing-marketplace-preview";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const features = [
   {
@@ -100,7 +101,7 @@ const steps = [
 
 export default function Home() {
   return (
-    <main className="dark min-h-screen bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">
+    <main className="min-h-screen bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">
       {/* Navbar */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/95">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -135,12 +136,15 @@ export default function Home() {
             </Link>
           </nav>
 
-          <Button asChild size="sm" className="rounded-lg">
-            <Link href="/login">
-              Get Started
-              <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button asChild size="sm" className="rounded-lg">
+              <Link href="/login">
+                Get Started
+                <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </header>
 

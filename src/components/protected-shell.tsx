@@ -9,6 +9,7 @@ import { motion } from "motion/react";
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/components/prototype-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navigation = [
   { href: "/home", label: "Marketplace" },
@@ -47,14 +48,14 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
 
   if (!ready || !user) {
     return (
-      <main className="dark flex min-h-screen items-center justify-center bg-background text-foreground">
+      <main className="flex min-h-screen items-center justify-center bg-background text-foreground">
         <p className="text-sm text-muted-foreground">Loading your workspace...</p>
       </main>
     );
   }
 
   return (
-    <main className="dark min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link href="/home" className="flex shrink-0 items-center gap-2.5">
@@ -88,6 +89,7 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
+            <ThemeToggle />
             <span className="hidden max-w-32 truncate text-sm text-muted-foreground xl:block">
               {user.name}
             </span>

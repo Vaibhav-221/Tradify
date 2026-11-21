@@ -381,7 +381,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
               onChange={(event) => onImageChange(event.target.files?.[0])}
             />
             {imageError ? (
-              <p role="alert" className="text-sm text-red-300">
+              <p role="alert" className="text-sm text-destructive">
                 {imageError}
               </p>
             ) : null}
@@ -390,7 +390,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
           {formError ? (
             <p
               role="alert"
-              className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-red-300"
+              className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive"
             >
               {formError}
             </p>

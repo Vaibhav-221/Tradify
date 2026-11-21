@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AnimationProvider } from "@/components/animation-provider";
 import { PrototypeProvider } from "@/components/prototype-provider";
@@ -23,12 +24,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <AnimationProvider>
           <PrototypeProvider>{children}</PrototypeProvider>
         </AnimationProvider>
+        <Script
+          id="theme-preference"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `try{var root=document.documentElement;var theme=localStorage.getItem("tradify_theme");if(theme==="light"||theme==="dark"){root.dataset.theme=theme;root.classList.toggle("dark",theme==="dark")}}catch{}`,
+          }}
+        />
       </body>
     </html>
   );
