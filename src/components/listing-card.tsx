@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Heart, MapPin, PackageOpen } from "lucide-react";
+import { motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/components/prototype-provider";
@@ -18,6 +19,7 @@ interface ListingCardProps {
   showWishlist?: boolean;
   sellerName?: string;
   actions?: ReactNode;
+  index?: number;
 }
 
 export function ListingCard({
@@ -25,6 +27,7 @@ export function ListingCard({
   showWishlist = true,
   sellerName,
   actions,
+  index = 0,
 }: ListingCardProps) {
   const { wishlist, toggleWishlist, notify, user } = usePrototype();
   const isSaved = wishlist.includes(listing.id);
@@ -36,14 +39,28 @@ export function ListingCard({
   }
 
   return (
-    <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-card/60 transition-colors hover:border-white/[0.16]">
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -3 }}
+      transition={{
+        layout: { duration: 0.25 },
+        default: { duration: 0.25, delay: Math.min(index * 0.04, 0.2) },
+      }}
+      className="overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary/30"
+    >
       <div className="relative">
         <Link
           href={`/listings/${listing.id}`}
           aria-label={`View listing: ${listing.title}`}
           className="block"
         >
-          <div className="flex h-48 items-center justify-center bg-white/[0.025]">
+          <motion.div
+            whileHover={{ scale: 1.035 }}
+            transition={{ duration: 0.25 }}
+            className="flex h-48 items-center justify-center bg-secondary"
+          >
             {listing.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -57,7 +74,7 @@ export function ListingCard({
                 className="h-10 w-10 text-muted-foreground/40"
               />
             )}
-          </div>
+          </motion.div>
         </Link>
         {showWishlist ? (
           <Button
@@ -69,9 +86,14 @@ export function ListingCard({
             aria-pressed={isSaved}
             className="absolute right-3 top-3 rounded-full bg-background/90"
           >
-            <Heart
-              className={`h-4 w-4 ${isSaved ? "fill-rose-500 text-rose-500" : ""}`}
-            />
+            <motion.span
+              animate={isSaved ? { scale: [1, 1.16, 1] } : { scale: 1 }}
+              transition={{ duration: 0.28 }}
+            >
+              <Heart
+                className={`h-4 w-4 ${isSaved ? "fill-rose-500 text-rose-500" : ""}`}
+              />
+            </motion.span>
           </Button>
         ) : null}
       </div>
@@ -107,25 +129,29 @@ export function ListingCard({
           </span>
         </div>
 
-        <div className="flex items-center justify-between gap-3 border-t border-white/[0.07] pt-3">
+        <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
           <span className="text-xs text-muted-foreground">
             {getListingTypeLabel(listing.type)}
           </span>
-          <span
+          <motion.span
+            key={listing.status}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2 }}
             className={`rounded-full px-2.5 py-1 text-[11px] ${
               listing.status === "available"
                 ? "bg-emerald-500/10 text-emerald-300"
                 : listing.status === "reserved"
                   ? "bg-amber-500/10 text-amber-300"
-                  : "bg-white/[0.08] text-muted-foreground"
+                  : "bg-secondary text-muted-foreground"
             }`}
           >
             {listing.status[0].toUpperCase() + listing.status.slice(1)}
-          </span>
+          </motion.span>
         </div>
 
         {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
       </div>
-    </article>
+    </motion.article>
   );
 }

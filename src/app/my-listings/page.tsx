@@ -41,10 +41,11 @@ export default function MyListingsPage() {
 
         {myListings.length ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {myListings.map((listing) => (
+            {myListings.map((listing, index) => (
               <ListingCard
                 key={listing.id}
                 listing={listing}
+                index={index}
                 showWishlist={false}
                 actions={
                   <>
@@ -90,7 +91,7 @@ export default function MyListingsPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-12 text-center">
+          <div className="rounded-2xl border border-dashed border-border px-6 py-12 text-center">
             <h2 className="font-semibold">You haven’t listed anything yet.</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Create a listing to share useful items with your campus.

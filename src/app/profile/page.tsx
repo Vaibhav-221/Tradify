@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { Camera, LogOut, Pencil, UserRound, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { Modal } from "@/components/modal";
 import { ProtectedShell } from "@/components/protected-shell";
@@ -27,6 +28,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null | undefined>(
     undefined,
   );
+  const [imageRevision, setImageRevision] = useState(0);
   const [imageError, setImageError] = useState("");
 
   if (!user) return <ProtectedShell><div /></ProtectedShell>;
@@ -51,7 +53,10 @@ export default function ProfilePage() {
     setImageError("");
     if (!file) return;
     void readImageFile(file)
-      .then(setProfileImage)
+      .then((dataUrl) => {
+        setProfileImage(dataUrl);
+        setImageRevision((revision) => revision + 1);
+      })
       .catch((error: unknown) => {
         setImageError(
           error instanceof Error ? error.message : "Unable to load this image.",
@@ -128,7 +133,13 @@ export default function ProfilePage() {
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-5">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/[0.04]">
+            <motion.div
+              key={`${imageRevision}-${Boolean(avatar)}`}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.25 }}
+              className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary"
+            >
               {avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -139,13 +150,27 @@ export default function ProfilePage() {
               ) : (
                 <UserRound className="h-9 w-9 text-muted-foreground" />
               )}
-            </div>
+            </motion.div>
             <div>
               <p className="text-sm text-primary">Student profile</p>
-              <h1 className="mt-1 text-3xl font-semibold tracking-tight">
+              <motion.h1
+                key={user.name}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="mt-1 text-3xl font-semibold tracking-tight"
+              >
                 {user.name}
-              </h1>
-              <p className="mt-1 text-sm text-muted-foreground">{user.email}</p>
+              </motion.h1>
+              <motion.p
+                key={user.email}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+                className="mt-1 text-sm text-muted-foreground"
+              >
+                {user.email}
+              </motion.p>
             </div>
           </div>
           {!editing ? (
@@ -160,7 +185,7 @@ export default function ProfilePage() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl border border-white/[0.08] bg-card/50 p-4"
+              className="rounded-xl border border-border bg-card/50 p-4"
             >
               <p className="text-2xl font-semibold">{stat.value}</p>
               <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
@@ -168,15 +193,27 @@ export default function ProfilePage() {
           ))}
         </div>
 
+        <AnimatePresence mode="wait" initial={false}>
         {editing ? (
-          <form
+          <motion.form
+            key="profile-edit"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.22 }}
             onSubmit={saveProfile}
-            className="mt-8 space-y-5 rounded-2xl border border-white/[0.08] bg-card/50 p-5 sm:p-8"
+            className="mt-8 space-y-5 rounded-2xl border border-border bg-card p-5 sm:p-8"
           >
             <div className="space-y-3">
               <p className="text-sm font-medium">Profile picture</p>
               {avatar ? (
-                <div className="flex items-center gap-4">
+                <motion.div
+                  key={imageRevision}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex items-center gap-4"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={avatar}
@@ -187,16 +224,19 @@ export default function ProfilePage() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => setProfileImage(null)}
+                    onClick={() => {
+                      setProfileImage(null);
+                      setImageRevision((revision) => revision + 1);
+                    }}
                   >
                     <X className="mr-1 h-4 w-4" />
                     Remove
                   </Button>
-                </div>
+                </motion.div>
               ) : null}
               <label
                 htmlFor="profile-image"
-                className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm hover:bg-white/[0.04]"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-accent"
               >
                 <Camera className="h-4 w-4" />
                 Choose profile image
@@ -239,7 +279,7 @@ export default function ProfilePage() {
                     required={name !== "phone"}
                     defaultValue={value}
                     maxLength={100}
-                    className="h-10 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm"
+                    className="h-10 w-full rounded-lg border border-border bg-secondary px-3 text-sm"
                   />
                 </div>
               ))}
@@ -254,7 +294,7 @@ export default function ProfilePage() {
                 maxLength={300}
                 rows={3}
                 defaultValue={user.bio}
-                className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm"
                 placeholder="A little about you (optional)"
               />
             </div>
@@ -264,9 +304,17 @@ export default function ProfilePage() {
                 Cancel
               </Button>
             </div>
-          </form>
+          </motion.form>
         ) : (
-          <div className="mt-8 rounded-2xl border border-white/[0.08] bg-card/50 p-5 sm:p-8">
+          <motion.div
+            key="profile-details"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            layout
+            transition={{ duration: 0.22 }}
+            className="mt-8 rounded-2xl border border-border bg-card p-5 sm:p-8"
+          >
             <div className="grid gap-6 sm:grid-cols-2">
               {[
                 ["Student ID", user.studentId],
@@ -276,13 +324,13 @@ export default function ProfilePage() {
                 ["Hostel", user.hostel],
                 ["Bio", user.bio || "No bio yet"],
               ].map(([label, value]) => (
-                <div key={label}>
+                <motion.div key={label} layout>
                   <p className="text-xs text-muted-foreground">{label}</p>
                   <p className="mt-1 whitespace-pre-wrap text-sm">{value}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-            <div className="mt-7 flex flex-wrap gap-3 border-t border-white/[0.08] pt-5">
+            <div className="mt-7 flex flex-wrap gap-3 border-t border-border pt-5">
               <Button asChild variant="outline" size="sm">
                 <Link href="/my-listings">My Listings</Link>
               </Button>
@@ -296,10 +344,11 @@ export default function ProfilePage() {
                 <Link href="/home">Return Home</Link>
               </Button>
             </div>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
-        <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/[0.08] bg-card/50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-border bg-card/50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div>
             <h2 className="font-semibold">Account</h2>
             <p className="mt-1 text-sm text-muted-foreground">

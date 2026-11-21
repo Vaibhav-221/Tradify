@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { ListingCard } from "@/components/listing-card";
 import { ProtectedShell } from "@/components/protected-shell";
@@ -81,7 +82,7 @@ export default function HomePage() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search listings by name, category, location..."
-            className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-10 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="h-11 w-full rounded-xl border border-border bg-secondary pl-10 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
         </div>
 
@@ -104,97 +105,102 @@ export default function HomePage() {
               />
             </Button>
           </div>
-          <div
-            id="marketplace-filters"
-            className={
-              filtersExpanded
-                ? "mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4"
-                : "hidden"
-            }
-          >
-            <div className="min-w-0">
-              <label
-                htmlFor="category-filter"
-                className="mb-1 block text-xs text-muted-foreground"
+          <AnimatePresence initial={false}>
+            {filtersExpanded ? (
+              <motion.div
+                key="marketplace-filters"
+                id="marketplace-filters"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="mt-2 grid grid-cols-2 gap-3 overflow-hidden sm:grid-cols-4"
               >
-                Category
-              </label>
-              <select
-                id="category-filter"
-                value={category}
-                onChange={(event) => setCategory(event.target.value)}
-                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-              >
-                <option value="All">All Categories</option>
-                {LISTING_CATEGORIES.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="min-w-0">
-              <label
-                htmlFor="listing-type-filter"
-                className="mb-1 block text-xs text-muted-foreground"
-              >
-                Listing type
-              </label>
-              <select
-                id="listing-type-filter"
-                value={type}
-                onChange={(event) => setType(event.target.value)}
-                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-              >
-                <option value="all">All Types</option>
-                <option value="sell">Sell</option>
-                <option value="giveaway">Give Away</option>
-                <option value="exchange">Exchange</option>
-              </select>
-            </div>
-            <div className="min-w-0">
-              <label
-                htmlFor="condition-filter"
-                className="mb-1 block text-xs text-muted-foreground"
-              >
-                Condition
-              </label>
-              <select
-                id="condition-filter"
-                value={condition}
-                onChange={(event) => setCondition(event.target.value)}
-                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-              >
-                <option value="all">Any Condition</option>
-                {CONDITIONS.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="min-w-0">
-              <label
-                htmlFor="hostel-filter"
-                className="mb-1 block text-xs text-muted-foreground"
-              >
-                Location
-              </label>
-              <select
-                id="hostel-filter"
-                value={hostel}
-                onChange={(event) => setHostel(event.target.value)}
-                className="h-10 w-full rounded-lg border border-white/10 bg-background px-2.5 text-sm sm:px-3"
-              >
-                <option value="all">All Locations</option>
-                {hostels.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+                <div className="min-w-0">
+                  <label
+                    htmlFor="category-filter"
+                    className="mb-1 block text-xs text-muted-foreground"
+                  >
+                    Category
+                  </label>
+                  <select
+                    id="category-filter"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                    className="h-10 w-full rounded-lg border border-border bg-background px-2.5 text-sm sm:px-3"
+                  >
+                    <option value="All">All Categories</option>
+                    {LISTING_CATEGORIES.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="min-w-0">
+                  <label
+                    htmlFor="listing-type-filter"
+                    className="mb-1 block text-xs text-muted-foreground"
+                  >
+                    Listing type
+                  </label>
+                  <select
+                    id="listing-type-filter"
+                    value={type}
+                    onChange={(event) => setType(event.target.value)}
+                    className="h-10 w-full rounded-lg border border-border bg-background px-2.5 text-sm sm:px-3"
+                  >
+                    <option value="all">All Types</option>
+                    <option value="sell">Sell</option>
+                    <option value="giveaway">Give Away</option>
+                    <option value="exchange">Exchange</option>
+                  </select>
+                </div>
+                <div className="min-w-0">
+                  <label
+                    htmlFor="condition-filter"
+                    className="mb-1 block text-xs text-muted-foreground"
+                  >
+                    Condition
+                  </label>
+                  <select
+                    id="condition-filter"
+                    value={condition}
+                    onChange={(event) => setCondition(event.target.value)}
+                    className="h-10 w-full rounded-lg border border-border bg-background px-2.5 text-sm sm:px-3"
+                  >
+                    <option value="all">Any Condition</option>
+                    {CONDITIONS.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="min-w-0">
+                  <label
+                    htmlFor="hostel-filter"
+                    className="mb-1 block text-xs text-muted-foreground"
+                  >
+                    Location
+                  </label>
+                  <select
+                    id="hostel-filter"
+                    value={hostel}
+                    onChange={(event) => setHostel(event.target.value)}
+                    className="h-10 w-full rounded-lg border border-border bg-background px-2.5 text-sm sm:px-3"
+                  >
+                    <option value="all">All Locations</option>
+                    {hostels.map((location) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
 
         <div className="mb-4 mt-6 flex items-end justify-between gap-3 sm:mt-7">
@@ -222,12 +228,12 @@ export default function HomePage() {
 
         {filteredListings.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredListings.map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
+            {filteredListings.map((listing, index) => (
+              <ListingCard key={listing.id} listing={listing} index={index} />
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-10 text-center">
+          <div className="rounded-2xl border border-dashed border-border px-6 py-10 text-center">
             <h2 className="font-semibold">
               {listings.some((listing) => listing.status !== "sold")
                 ? "No listings match your filters"
@@ -262,10 +268,15 @@ export default function HomePage() {
           </div>
           {filteredRequests.length ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredRequests.map((request) => (
-                <article
+              {filteredRequests.map((request, index) => (
+                <motion.article
                   key={request.id}
-                  className="flex flex-col rounded-xl border border-white/[0.08] bg-card/60 p-4"
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -3 }}
+                  transition={{ duration: 0.25, delay: Math.min(index * 0.04, 0.2) }}
+                  className="flex flex-col rounded-xl border border-border bg-card p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="font-semibold leading-5">{request.title}</h3>
@@ -276,7 +287,7 @@ export default function HomePage() {
                   <p className="mt-2 line-clamp-4 whitespace-pre-wrap text-sm text-muted-foreground">
                     {request.description}
                   </p>
-                  <div className="mt-auto border-t border-white/[0.07] pt-3">
+                  <div className="mt-auto border-t border-border pt-3">
                     <p className="text-xs text-muted-foreground">
                       {request.category} ·{" "}
                       {request.budget === undefined
@@ -285,11 +296,11 @@ export default function HomePage() {
                       · {request.hostel}
                     </p>
                   </div>
-                </article>
+                </motion.article>
               ))}
             </div>
           ) : (
-            <p className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-8 text-center text-sm text-muted-foreground">
+            <p className="rounded-2xl border border-dashed border-border px-6 py-8 text-center text-sm text-muted-foreground">
               {lookingForRequests.length
                 ? "No requests match your filters."
                 : "No Looking For requests yet."}

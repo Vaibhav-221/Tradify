@@ -43,13 +43,13 @@ export default function AdminPage() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl border border-white/[0.08] bg-card/50 p-4"
+              className="rounded-xl border border-border bg-card/50 p-4"
             >
               <p className="text-2xl font-semibold">{stat.value}</p>
               <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
             </div>
           ))}
-          <div className="rounded-xl border border-white/[0.08] bg-card/50 p-4">
+          <div className="rounded-xl border border-border bg-card/50 p-4">
             <p className="text-2xl font-semibold">{listingActions.length}</p>
             <p className="mt-1 text-xs text-muted-foreground">
               Simulated interactions
@@ -60,7 +60,7 @@ export default function AdminPage() {
         <div
           role="tablist"
           aria-label="Admin sections"
-          className="mt-8 flex gap-2 border-b border-white/[0.08]"
+          className="mt-8 flex gap-2 border-b border-border"
         >
           {(
             [
@@ -89,13 +89,13 @@ export default function AdminPage() {
 
         <section
           role="tabpanel"
-          className="mt-5 rounded-2xl border border-white/[0.08] bg-card/30 p-5"
+          className="mt-5 rounded-2xl border border-border bg-card/30 p-5"
         >
           {tab === "listings" ? (
             <>
               <h2 className="text-lg font-semibold">Local listings</h2>
               {listings.length ? (
-                <div className="mt-4 divide-y divide-white/[0.07]">
+                <div className="mt-4 divide-y divide-border">
                   {listings.map((listing) => (
                     <div
                       key={listing.id}
@@ -114,7 +114,7 @@ export default function AdminPage() {
                           {getListingTypeLabel(listing.type)}
                         </p>
                       </div>
-                      <span className="rounded-full border border-white/10 px-3 py-1 text-xs capitalize text-muted-foreground">
+                      <span className="rounded-full border border-border px-3 py-1 text-xs capitalize text-muted-foreground">
                         {listing.status}
                       </span>
                     </div>
@@ -132,7 +132,7 @@ export default function AdminPage() {
             <>
               <h2 className="text-lg font-semibold">Local user profile</h2>
               {user ? (
-                <div className="mt-4 rounded-xl border border-white/[0.08] p-4">
+                <div className="mt-4 rounded-xl border border-border p-4">
                   <p className="font-medium">{user.name}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {user.email} · {user.studentId}
@@ -165,7 +165,7 @@ export default function AdminPage() {
                     return (
                       <article
                         key={report.id}
-                        className="rounded-xl border border-white/[0.08] p-4"
+                        className="rounded-xl border border-border p-4"
                       >
                         <p className="font-medium">
                           {listing ? (

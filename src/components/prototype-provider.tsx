@@ -195,7 +195,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
           key={toast.id}
           role="status"
           aria-live="polite"
-          className="fixed bottom-4 right-4 z-[100] max-w-[calc(100vw-2rem)] rounded-xl border border-white/10 bg-card px-4 py-3 text-sm text-foreground shadow-2xl"
+          className="fixed bottom-4 right-4 z-[100] max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground shadow-2xl"
         >
           {toast.message}
         </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { ArrowLeft, ImagePlus, X } from "lucide-react";
+import { motion } from "motion/react";
 
 import { ProtectedShell } from "@/components/protected-shell";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
   const [imageError, setImageError] = useState("");
   const [formError, setFormError] = useState("");
   const [readingImage, setReadingImage] = useState(false);
+  const [previewRevision, setPreviewRevision] = useState(0);
 
   useEffect(() => {
     if (!ready || !resolvedEditId || !existing || !user) return;
@@ -50,7 +52,10 @@ export function ListingEditor({ editId }: ListingEditorProps) {
 
     setReadingImage(true);
     void readImageFile(file)
-      .then((dataUrl) => setImageOverride(dataUrl))
+      .then((dataUrl) => {
+        setImageOverride(dataUrl);
+        setPreviewRevision((revision) => revision + 1);
+      })
       .catch((error: unknown) => {
         setImageError(
           error instanceof Error ? error.message : "Unable to load this image.",
@@ -182,7 +187,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-5 rounded-2xl border border-white/[0.08] bg-card/50 p-5 sm:p-8"
+          className="space-y-5 rounded-2xl border border-border bg-card/50 p-5 sm:p-8"
         >
           <div className="space-y-2">
             <label htmlFor="title" className="text-sm font-medium">
@@ -195,7 +200,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
               maxLength={80}
               defaultValue={existing?.title}
               placeholder="e.g. Scientific calculator"
-              className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none placeholder:text-muted-foreground/50 focus:border-primary/50"
+              className="h-11 w-full rounded-lg border border-border bg-secondary px-3 text-sm outline-none placeholder:text-muted-foreground/50 focus:border-primary/50"
             />
           </div>
 
@@ -210,7 +215,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                 onChange={(event) =>
                   setTypeOverride(event.target.value as ListingType)
                 }
-                className="h-11 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+                className="h-11 w-full rounded-lg border border-border bg-background px-3 text-sm"
               >
                 <option value="sell">Sell</option>
                 <option value="giveaway">Give Away</option>
@@ -227,7 +232,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                 name="category"
                 required
                 defaultValue={existing?.category ?? ""}
-                className="h-11 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+                className="h-11 w-full rounded-lg border border-border bg-background px-3 text-sm"
               >
                 <option value="">Choose a category</option>
                 {LISTING_CATEGORIES.map((item) => (
@@ -253,7 +258,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                 required
                 defaultValue={existing?.price}
                 placeholder="e.g. 650"
-                className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none"
+                className="h-11 w-full rounded-lg border border-border bg-secondary px-3 text-sm outline-none"
               />
             </div>
           ) : null}
@@ -270,7 +275,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                 maxLength={120}
                 defaultValue={existing?.exchangeFor}
                 placeholder="e.g. A desk lamp or study supplies"
-                className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none"
+                className="h-11 w-full rounded-lg border border-border bg-secondary px-3 text-sm outline-none"
               />
             </div>
           ) : null}
@@ -285,7 +290,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                 name="condition"
                 required
                 defaultValue={existing?.condition ?? "new"}
-                className="h-11 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+                className="h-11 w-full rounded-lg border border-border bg-background px-3 text-sm"
               >
                 {CONDITIONS.map((item) => (
                   <option key={item.value} value={item.value}>
@@ -305,7 +310,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                 maxLength={60}
                 defaultValue={existing?.hostel ?? user?.hostel}
                 placeholder="e.g. Hostel A"
-                className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none"
+                className="h-11 w-full rounded-lg border border-border bg-secondary px-3 text-sm outline-none"
               />
             </div>
           </div>
@@ -323,7 +328,7 @@ export function ListingEditor({ editId }: ListingEditorProps) {
               rows={5}
               defaultValue={existing?.description}
               placeholder="Describe the item and anything a buyer should know."
-              className="w-full resize-y rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm outline-none"
+              className="w-full resize-y rounded-lg border border-border bg-secondary px-3 py-2.5 text-sm outline-none"
             />
           </div>
 
@@ -332,7 +337,13 @@ export function ListingEditor({ editId }: ListingEditorProps) {
               Item image <span className="text-muted-foreground">(optional)</span>
             </label>
             {image ? (
-              <div className="relative w-full max-w-sm overflow-hidden rounded-xl border border-white/10">
+              <motion.div
+                key={previewRevision}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.25 }}
+                className="relative w-full max-w-sm overflow-hidden rounded-xl border border-border"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={image}
@@ -343,17 +354,20 @@ export function ListingEditor({ editId }: ListingEditorProps) {
                   type="button"
                   variant="secondary"
                   size="sm"
-                  onClick={() => setImageOverride(null)}
+                  onClick={() => {
+                    setImageOverride(null);
+                    setPreviewRevision((revision) => revision + 1);
+                  }}
                   className="absolute right-2 top-2"
                 >
                   <X className="h-4 w-4" />
                   Remove image
                 </Button>
-              </div>
+              </motion.div>
             ) : (
               <label
                 htmlFor="listing-image"
-                className="flex min-h-28 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 bg-white/[0.02] text-sm text-muted-foreground hover:bg-white/[0.04]"
+                className="flex min-h-28 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-secondary text-sm text-muted-foreground hover:bg-accent"
               >
                 <ImagePlus className="h-5 w-5" />
                 Choose JPG, PNG, or WebP (up to 1 MB)

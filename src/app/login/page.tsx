@@ -23,6 +23,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { usePrototype } from "@/components/prototype-provider";
+import { Reveal } from "@/components/reveal";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -82,13 +83,6 @@ export default function LoginPage() {
 
   return (
     <main className="dark relative min-h-screen overflow-hidden bg-background font-sans text-foreground">
-      {/* Background atmosphere */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-[-260px] h-[600px] w-[850px] -translate-x-1/2 rounded-full bg-primary/10 blur-[160px]" />
-
-        <div className="absolute bottom-[-250px] right-[-150px] h-[450px] w-[450px] rounded-full bg-primary/5 blur-[140px]" />
-      </div>
-
       {/* Header */}
       <header className="absolute left-0 right-0 top-0 z-10">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -112,9 +106,9 @@ export default function LoginPage() {
 
       {/* Login */}
       <section className="flex min-h-screen items-center justify-center px-4 pb-10 pt-28 sm:px-6">
-        <div className="w-full max-w-md">
+        <Reveal className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] shadow-lg">
+            <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-secondary">
               <BrandLogo className="h-10 w-9" />
             </div>
 
@@ -128,7 +122,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <Card className="border-white/[0.08] bg-card/70 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <Card className="border-border bg-card">
             <CardHeader className="space-y-2 pb-5">
               <CardTitle className="text-xl tracking-tight">
                 Sign in to Tradify
@@ -154,7 +148,7 @@ export default function LoginPage() {
                       onChange={(event) => setIdentifier(event.target.value)}
                       placeholder="STU001 or you@college.edu"
                       autoComplete="username"
-                      className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] pl-10 pr-4 text-sm outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/10"
+                      className="h-11 w-full rounded-lg border border-border bg-secondary pl-10 pr-4 text-sm outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/10"
                     />
                   </div>
                 </div>
@@ -173,7 +167,7 @@ export default function LoginPage() {
                       onChange={(event) => setPassword(event.target.value)}
                       placeholder="Enter at least 6 characters"
                       autoComplete="current-password"
-                      className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.03] px-10 text-sm outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/10"
+                      className="h-11 w-full rounded-lg border border-border bg-secondary px-10 text-sm outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/10"
                     />
                     <button
                       type="button"
@@ -202,6 +196,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={isLoggingIn}
+                  aria-busy={isLoggingIn}
                   className="h-11 w-full rounded-lg"
                 >
                   {isLoggingIn ? (
@@ -231,7 +226,7 @@ export default function LoginPage() {
           <p className="mt-6 text-center text-xs text-muted-foreground">
             Tradify is built for student-to-student commerce on campus.
           </p>
-        </div>
+        </Reveal>
       </section>
     </main>
   );

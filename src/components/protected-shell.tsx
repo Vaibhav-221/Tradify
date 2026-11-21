@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
 import { CircleUserRound, Heart, Plus } from "lucide-react";
+import { motion } from "motion/react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
@@ -54,7 +55,7 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
 
   return (
     <main className="dark min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-background/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link href="/home" className="flex shrink-0 items-center gap-2.5">
             <BrandLogo className="h-9 w-8" />
@@ -74,8 +75,8 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
                 aria-current={pathname === item.href ? "page" : undefined}
                 className={`whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors ${
                   pathname === item.href
-                    ? "bg-white/[0.08] text-foreground"
-                    : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 {item.href === "/wishlist" ? (
@@ -121,7 +122,7 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
         <nav
           ref={mobileNavigationRef}
           aria-label="Mobile navigation"
-          className="scrollbar-none flex gap-1 overflow-x-auto border-t border-white/[0.06] px-4 py-2 lg:hidden"
+          className="scrollbar-none flex gap-1 overflow-x-auto border-t border-border px-4 py-2 lg:hidden"
         >
           {navigation.map((item) => (
             <Link
@@ -130,8 +131,8 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
               aria-current={pathname === item.href ? "page" : undefined}
               className={`whitespace-nowrap rounded-lg px-3 py-2 text-xs transition-colors ${
                 pathname === item.href
-                  ? "bg-white/[0.08] text-foreground"
-                  : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
+                  ? "bg-secondary text-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
               {item.href === "/wishlist" ? (
@@ -142,7 +143,14 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
       </header>
-      {children}
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
     </main>
   );
 }

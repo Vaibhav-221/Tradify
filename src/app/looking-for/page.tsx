@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Trash2 } from "lucide-react";
+import { motion } from "motion/react";
 
 import { Modal } from "@/components/modal";
 import { ProtectedShell } from "@/components/protected-shell";
@@ -89,7 +90,7 @@ export default function LookingForPage() {
 
           <form
             onSubmit={submitRequest}
-            className="mt-7 space-y-4 rounded-2xl border border-white/[0.08] bg-card/50 p-5"
+            className="mt-7 space-y-4 rounded-2xl border border-border bg-card/50 p-5"
           >
             <div className="space-y-2">
               <label htmlFor="request-title" className="text-sm font-medium">
@@ -100,7 +101,7 @@ export default function LookingForPage() {
                 name="title"
                 required
                 maxLength={100}
-                className="h-10 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm"
+                className="h-10 w-full rounded-lg border border-border bg-secondary px-3 text-sm"
                 placeholder="e.g. Second-hand mechanical keyboard"
               />
             </div>
@@ -118,7 +119,7 @@ export default function LookingForPage() {
                 minLength={10}
                 maxLength={800}
                 rows={3}
-                className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm"
                 placeholder="Add details that could help a student respond."
               />
             </div>
@@ -132,7 +133,7 @@ export default function LookingForPage() {
                   name="category"
                   required
                   defaultValue=""
-                  className="h-10 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+                  className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
                 >
                   <option value="">Choose category</option>
                   {LISTING_CATEGORIES.map((item) => (
@@ -152,7 +153,7 @@ export default function LookingForPage() {
                   type="number"
                   min="0"
                   step="0.01"
-                  className="h-10 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm"
+                  className="h-10 w-full rounded-lg border border-border bg-secondary px-3 text-sm"
                   placeholder="Optional"
                 />
               </div>
@@ -167,7 +168,7 @@ export default function LookingForPage() {
                 required
                 maxLength={60}
                 defaultValue={user?.hostel}
-                className="h-10 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm"
+                className="h-10 w-full rounded-lg border border-border bg-secondary px-3 text-sm"
               />
             </div>
             <Button type="submit">Post request</Button>
@@ -178,10 +179,17 @@ export default function LookingForPage() {
           <h2 className="text-xl font-semibold">Your requests</h2>
           {requests.length ? (
             <div className="mt-5 space-y-3">
-              {requests.map((request) => (
-                <article
+              {requests.map((request, index) => (
+                <motion.article
                   key={request.id}
-                  className="rounded-xl border border-white/[0.08] bg-card/50 p-5"
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.25,
+                    delay: Math.min(index * 0.04, 0.2),
+                  }}
+                  className="rounded-xl border border-border bg-card p-5"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -207,11 +215,11 @@ export default function LookingForPage() {
                       : `Up to ₹${request.budget}`}{" "}
                     · {request.hostel}
                   </p>
-                </article>
+                </motion.article>
               ))}
             </div>
           ) : (
-            <div className="mt-5 rounded-2xl border border-dashed border-white/[0.12] px-6 py-10 text-center">
+            <div className="mt-5 rounded-2xl border border-dashed border-border px-6 py-10 text-center">
               <p className="font-medium">You haven’t posted any requests.</p>
               <p className="mt-2 text-sm text-muted-foreground">
                 Submit the form to add your first request.

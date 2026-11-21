@@ -20,12 +20,12 @@ export default function WishlistPage() {
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">Favorites</h1>
         {savedListings.length ? (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {savedListings.map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
+            {savedListings.map((listing, index) => (
+              <ListingCard key={listing.id} listing={listing} index={index} />
             ))}
           </div>
         ) : (
-          <div className="mt-8 rounded-2xl border border-dashed border-white/[0.12] px-6 py-12 text-center">
+          <div className="mt-8 rounded-2xl border border-dashed border-border px-6 py-12 text-center">
             <h2 className="font-semibold">You don’t have any favorites yet.</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Save listings you like and find them here later.

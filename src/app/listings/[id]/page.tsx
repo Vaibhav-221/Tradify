@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import { ArrowLeft, Heart, MapPin, Pencil, ShieldAlert } from "lucide-react";
+import { motion } from "motion/react";
 
 import { Modal } from "@/components/modal";
 import { ProtectedShell } from "@/components/protected-shell";
@@ -162,14 +163,20 @@ function ListingDetailsContent() {
         </button>
 
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="flex min-h-72 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-card/60 sm:min-h-[480px]">
+          <div className="flex min-h-72 items-center justify-center overflow-hidden rounded-2xl border border-border bg-card/60 sm:min-h-[480px]">
             {listing.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={listing.image}
-                alt={listing.title}
-                className="h-full max-h-[600px] w-full object-contain"
-              />
+              <motion.div
+                whileHover={{ scale: 1.015 }}
+                transition={{ duration: 0.25 }}
+                className="flex w-full items-center justify-center"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={listing.image}
+                  alt={listing.title}
+                  className="h-full max-h-[600px] w-full object-contain"
+                />
+              </motion.div>
             ) : (
               <div className="p-8 text-center text-sm text-muted-foreground">
                 No image provided
@@ -180,10 +187,10 @@ function ListingDetailsContent() {
           <div className="space-y-6">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-muted-foreground">
+                <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
                   {listing.category}
                 </span>
-                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-muted-foreground">
+                <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
                   {getListingTypeLabel(listing.type)}
                 </span>
                 <span
@@ -192,7 +199,7 @@ function ListingDetailsContent() {
                       ? "bg-emerald-500/10 text-emerald-300"
                       : listing.status === "reserved"
                         ? "bg-amber-500/10 text-amber-300"
-                        : "bg-white/[0.08] text-muted-foreground"
+                        : "bg-secondary text-muted-foreground"
                   }`}
                 >
                   {listing.status[0].toUpperCase() + listing.status.slice(1)}
@@ -204,7 +211,7 @@ function ListingDetailsContent() {
               <p className="mt-3 text-2xl font-semibold">{formatPrice(listing)}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 rounded-xl border border-white/[0.08] bg-card/50 p-4 text-sm">
+            <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-card/50 p-4 text-sm">
               <div>
                 <p className="text-xs text-muted-foreground">Condition</p>
                 <p className="mt-1">{getConditionLabel(listing.condition)}</p>
@@ -238,7 +245,7 @@ function ListingDetailsContent() {
             </div>
 
             {listing.type === "exchange" && listing.exchangeFor ? (
-              <div className="rounded-xl border border-white/[0.08] bg-card/50 p-4">
+              <div className="rounded-xl border border-border bg-card/50 p-4">
                 <p className="text-xs text-muted-foreground">
                   Looking for in exchange
                 </p>
@@ -338,7 +345,7 @@ function ListingDetailsContent() {
               : "This prototype does not send messages. You can use the seller’s shared contact details to connect."}
           </p>
           {!isOwner ? (
-            <div className="mt-4 rounded-lg border border-white/10 p-4 text-sm">
+            <div className="mt-4 rounded-lg border border-border p-4 text-sm">
               <p>{listing.sellerId === user.id ? user.name : "Campus student"}</p>
               {listing.sellerId === user.id ? (
                 <>
@@ -428,7 +435,7 @@ function ListingDetailsContent() {
               value={proposal}
               onChange={(event) => setProposal(event.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               placeholder="Describe what you would like to offer..."
             />
             <div className="flex justify-end gap-2">
@@ -460,7 +467,7 @@ function ListingDetailsContent() {
               onChange={(event) =>
                 setReportReason(event.target.value as ReportReason)
               }
-              className="h-10 w-full rounded-lg border border-white/10 bg-background px-3 text-sm"
+              className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
             >
               {reportReasons.map((reason) => (
                 <option key={reason.value} value={reason.value}>
@@ -477,7 +484,7 @@ function ListingDetailsContent() {
               rows={3}
               value={reportDescription}
               onChange={(event) => setReportDescription(event.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
             />
             <div className="flex justify-end gap-2">
               <Button
