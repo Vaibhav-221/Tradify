@@ -32,7 +32,7 @@ export function ListingCard({
   function handleWishlist() {
     const nextSaved = !wishlist.includes(listing.id);
     toggleWishlist(listing.id);
-    notify(nextSaved ? "Added to wishlist." : "Removed from wishlist.");
+    notify(nextSaved ? "Added to favorites." : "Removed from favorites.");
   }
 
   return (
@@ -65,7 +65,7 @@ export function ListingCard({
             variant="secondary"
             size="icon"
             onClick={handleWishlist}
-            aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label={isSaved ? "Remove from favorites" : "Add to favorites"}
             aria-pressed={isSaved}
             className="absolute right-3 top-3 rounded-full bg-background/90"
           >

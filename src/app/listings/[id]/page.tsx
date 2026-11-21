@@ -118,7 +118,7 @@ function ListingDetailsContent() {
 
   function toggleSaved() {
     toggleWishlist(id);
-    notify(saved ? "Removed from wishlist." : "Added to wishlist.");
+    notify(saved ? "Removed from favorites." : "Added to favorites.");
   }
 
   if (!ready || !user) {
@@ -311,7 +311,7 @@ function ListingDetailsContent() {
                 <Heart
                   className={`mr-2 h-4 w-4 ${saved ? "fill-rose-500 text-rose-500" : ""}`}
                 />
-                {saved ? "Saved" : "Add to wishlist"}
+                {saved ? "Saved" : "Add to favorites"}
               </Button>
               {!isOwner ? (
                 <Button

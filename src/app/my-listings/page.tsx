@@ -127,7 +127,7 @@ export default function MyListingsPage() {
         >
           <p className="text-sm text-muted-foreground">
             “{pendingDelete.title}” will be permanently removed from the
-            marketplace. Its wishlist entries will also be cleared.
+            marketplace. Its favorites will also be cleared.
           </p>
         </Modal>
       ) : null}

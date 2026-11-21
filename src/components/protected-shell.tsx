@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
-import { CircleUserRound, Plus } from "lucide-react";
+import { CircleUserRound, Heart, Plus } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { usePrototype } from "@/components/prototype-provider";
 const navigation = [
   { href: "/home", label: "Marketplace" },
   { href: "/my-listings", label: "My Listings" },
-  { href: "/wishlist", label: "Wishlist" },
+  { href: "/wishlist", label: "Favorites" },
   { href: "/looking-for", label: "Looking For" },
   { href: "/admin", label: "Admin" },
 ];
@@ -78,6 +78,9 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
                     : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
                 }`}
               >
+                {item.href === "/wishlist" ? (
+                  <Heart aria-hidden="true" className="mr-1.5 inline h-3.5 w-3.5" />
+                ) : null}
                 {item.label}
               </Link>
             ))}
@@ -131,6 +134,9 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
                   : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
               }`}
             >
+              {item.href === "/wishlist" ? (
+                <Heart aria-hidden="true" className="mr-1.5 inline h-3.5 w-3.5" />
+              ) : null}
               {item.label}
             </Link>
           ))}

@@ -37,7 +37,7 @@ export default function ProfilePage() {
   );
   const stats = [
     { label: "Total listings", value: myListings.length },
-    { label: "Wishlist items", value: wishlist.length },
+    { label: "Favorites", value: wishlist.length },
     { label: "Looking For requests", value: requests.length },
     {
       label: "Sold / reserved",
@@ -287,7 +287,7 @@ export default function ProfilePage() {
                 <Link href="/my-listings">My Listings</Link>
               </Button>
               <Button asChild variant="outline" size="sm">
-                <Link href="/wishlist">Wishlist</Link>
+                <Link href="/wishlist">Favorites</Link>
               </Button>
               <Button asChild variant="outline" size="sm">
                 <Link href="/looking-for">Looking For</Link>

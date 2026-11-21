@@ -11,7 +11,7 @@ import { usePrototype } from "@/components/prototype-provider";
 import { CONDITIONS, LISTING_CATEGORIES } from "@/lib/marketplace";
 
 export default function HomePage() {
-  const { listings } = usePrototype();
+  const { listings, lookingForRequests } = usePrototype();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [type, setType] = useState("all");
@@ -24,7 +24,7 @@ export default function HomePage() {
   );
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const filteredListings = listings.filter((listing) => {
-    if (listing.status !== "available") return false;
+    if (listing.status === "sold") return false;
     if (category !== "All" && listing.category !== category) return false;
     if (type !== "all" && listing.type !== type) return false;
     if (condition !== "all" && listing.condition !== condition) return false;
@@ -36,6 +36,18 @@ export default function HomePage() {
       listing.description,
       listing.category,
       listing.hostel,
+    ].some((value) => value.toLocaleLowerCase().includes(normalizedSearch));
+  });
+  const filteredRequests = lookingForRequests.filter((request) => {
+    if (category !== "All" && request.category !== category) return false;
+    if (hostel !== "all" && request.hostel !== hostel) return false;
+    if (!normalizedSearch) return true;
+
+    return [
+      request.title,
+      request.description,
+      request.category,
+      request.hostel,
     ].some((value) => value.toLocaleLowerCase().includes(normalizedSearch));
   });
   const hasFilters =
@@ -192,7 +204,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-0.5 text-sm text-muted-foreground">
               {filteredListings.length}{" "}
-              {filteredListings.length === 1 ? "item" : "items"} available
+              {filteredListings.length === 1 ? "item" : "items"} listed
             </p>
           </div>
           {hasFilters ? (
@@ -217,22 +229,73 @@ export default function HomePage() {
         ) : (
           <div className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-10 text-center">
             <h2 className="font-semibold">
-              {listings.some((listing) => listing.status === "available")
+              {listings.some((listing) => listing.status !== "sold")
                 ? "No listings match your filters"
                 : "No listings yet"}
             </h2>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-              {listings.some((listing) => listing.status === "available")
+              {listings.some((listing) => listing.status !== "sold")
                 ? "Try a different search or clear the selected filters."
                 : "Be the first to share something with your campus community."}
             </p>
-            {!listings.some((listing) => listing.status === "available") ? (
+            {!listings.some((listing) => listing.status !== "sold") ? (
               <Button asChild className="mt-5">
                 <Link href="/create-listing">Create the first listing</Link>
               </Button>
             ) : null}
           </div>
         )}
+
+        <section className="mt-10">
+          <div className="mb-4 flex items-end justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                Looking For
+              </h2>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                Requests from your campus community
+              </p>
+            </div>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/looking-for">Post a request</Link>
+            </Button>
+          </div>
+          {filteredRequests.length ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredRequests.map((request) => (
+                <article
+                  key={request.id}
+                  className="flex flex-col rounded-xl border border-white/[0.08] bg-card/60 p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-semibold leading-5">{request.title}</h3>
+                    <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] text-primary">
+                      Looking For
+                    </span>
+                  </div>
+                  <p className="mt-2 line-clamp-4 whitespace-pre-wrap text-sm text-muted-foreground">
+                    {request.description}
+                  </p>
+                  <div className="mt-auto border-t border-white/[0.07] pt-3">
+                    <p className="text-xs text-muted-foreground">
+                      {request.category} ·{" "}
+                      {request.budget === undefined
+                        ? "No budget specified"
+                        : `Up to ₹${request.budget}`}{" "}
+                      · {request.hostel}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="rounded-2xl border border-dashed border-white/[0.12] px-6 py-8 text-center text-sm text-muted-foreground">
+              {lookingForRequests.length
+                ? "No requests match your filters."
+                : "No Looking For requests yet."}
+            </p>
+          )}
+        </section>
       </section>
     </ProtectedShell>
   );

@@ -17,7 +17,7 @@ export default function WishlistPage() {
     <ProtectedShell>
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <p className="text-sm text-primary">Saved for later</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">Wishlist</h1>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight">Favorites</h1>
         {savedListings.length ? (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {savedListings.map((listing) => (
@@ -26,7 +26,7 @@ export default function WishlistPage() {
           </div>
         ) : (
           <div className="mt-8 rounded-2xl border border-dashed border-white/[0.12] px-6 py-12 text-center">
-            <h2 className="font-semibold">Your wishlist is empty.</h2>
+            <h2 className="font-semibold">You don’t have any favorites yet.</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Save listings you like and find them here later.
             </p>

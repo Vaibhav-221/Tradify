@@ -9,6 +9,7 @@ import {
   Eye,
   EyeOff,
   LockKeyhole,
+  LoaderCircle,
   Mail,
 } from "lucide-react";
 
@@ -30,12 +31,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     if (ready && user) router.replace("/home");
   }, [ready, user, router]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
 
@@ -57,6 +59,8 @@ export default function LoginPage() {
     }
 
     const isEmail = trimmedIdentifier.includes("@");
+    setIsLoggingIn(true);
+    await new Promise((resolve) => window.setTimeout(resolve, 1000));
     try {
       login({
         id: "user-001",
@@ -71,6 +75,8 @@ export default function LoginPage() {
       router.push("/home");
     } catch {
       setError("Unable to save the demo session. Check browser storage and try again.");
+    } finally {
+      setIsLoggingIn(false);
     }
   }
 
@@ -193,9 +199,25 @@ export default function LoginPage() {
                   </p>
                 ) : null}
 
-                <Button type="submit" className="h-11 w-full rounded-lg">
-                  Continue
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                <Button
+                  type="submit"
+                  disabled={isLoggingIn}
+                  className="h-11 w-full rounded-lg"
+                >
+                  {isLoggingIn ? (
+                    <>
+                      Signing in
+                      <LoaderCircle
+                        aria-hidden="true"
+                        className="ml-1.5 h-4 w-4 animate-spin"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      Continue
+                      <ArrowRight className="ml-1.5 h-4 w-4" />
+                    </>
+                  )}
                 </Button>
               </form>
 
