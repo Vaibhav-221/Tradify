@@ -2,17 +2,27 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ListingCard } from "@/components/listing-card";
+import { Modal } from "@/components/modal";
 import { ProtectedShell } from "@/components/protected-shell";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/components/prototype-provider";
 import { CONDITIONS, LISTING_CATEGORIES } from "@/lib/marketplace";
+import type { LookingForRequest } from "@/lib/types";
 
 export default function HomePage() {
-  const { listings, lookingForRequests } = usePrototype();
+  const {
+    user,
+    listings,
+    lookingForRequests,
+    deleteLookingForRequest,
+    notify,
+  } = usePrototype();
+  const [pendingRequestDelete, setPendingRequestDelete] =
+    useState<LookingForRequest | null>(null);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [type, setType] = useState("all");
@@ -64,6 +74,18 @@ export default function HomePage() {
     setType("all");
     setCondition("all");
     setHostel("all");
+  }
+
+  function confirmDeleteRequest() {
+    if (!user || !pendingRequestDelete) return;
+    if (pendingRequestDelete.userId !== user.id) {
+      setPendingRequestDelete(null);
+      return;
+    }
+
+    deleteLookingForRequest(pendingRequestDelete.id);
+    setPendingRequestDelete(null);
+    notify("Looking For request deleted.");
   }
 
   return (
@@ -280,9 +302,24 @@ export default function HomePage() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="font-semibold leading-5">{request.title}</h3>
-                    <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] text-primary">
-                      Looking For
-                    </span>
+                    <div className="flex shrink-0 items-center gap-1">
+                      <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] text-primary">
+                        Looking For
+                      </span>
+                      {request.userId === user?.id ? (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Delete request ${request.title}`}
+                          title="Delete request"
+                          onClick={() => setPendingRequestDelete(request)}
+                          className="size-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      ) : null}
+                    </div>
                   </div>
                   <p className="mt-2 line-clamp-4 whitespace-pre-wrap text-sm text-muted-foreground">
                     {request.description}
@@ -308,6 +345,34 @@ export default function HomePage() {
           )}
         </section>
       </section>
+      {pendingRequestDelete ? (
+        <Modal
+          title="Delete Looking For request?"
+          onClose={() => setPendingRequestDelete(null)}
+          footer={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setPendingRequestDelete(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={confirmDeleteRequest}
+              >
+                Delete request
+              </Button>
+            </>
+          }
+        >
+          <p className="text-sm text-muted-foreground">
+            “{pendingRequestDelete.title}” will be removed from the marketplace.
+          </p>
+        </Modal>
+      ) : null}
     </ProtectedShell>
   );
 }

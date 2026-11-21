@@ -1,32 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Check, Pencil, Trash2 } from "lucide-react";
+import { Check, Pencil } from "lucide-react";
 
 import { ListingCard } from "@/components/listing-card";
-import { Modal } from "@/components/modal";
 import { ProtectedShell } from "@/components/protected-shell";
 import { usePrototype } from "@/components/prototype-provider";
 import { Button } from "@/components/ui/button";
 import type { Listing, ListingStatus } from "@/lib/types";
 
 export default function MyListingsPage() {
-  const { user, listings, updateListing, deleteListing, notify } =
-    usePrototype();
-  const [pendingDelete, setPendingDelete] = useState<Listing | null>(null);
+  const { user, listings, updateListing, notify } = usePrototype();
   const myListings = listings.filter((listing) => listing.sellerId === user?.id);
 
   function setStatus(listing: Listing, status: ListingStatus) {
     updateListing(listing.id, { status });
     notify(`Listing marked ${status}.`);
-  }
-
-  function confirmDelete() {
-    if (!pendingDelete) return;
-    deleteListing(pendingDelete.id);
-    setPendingDelete(null);
-    notify("Listing deleted.");
   }
 
   return (
@@ -76,15 +65,6 @@ export default function MyListingsPage() {
                         Mark available
                       </Button>
                     )}
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => setPendingDelete(listing)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                      Delete
-                    </Button>
                   </>
                 }
               />
@@ -102,36 +82,6 @@ export default function MyListingsPage() {
           </div>
         )}
       </section>
-
-      {pendingDelete ? (
-        <Modal
-          title="Delete this listing?"
-          onClose={() => setPendingDelete(null)}
-          footer={
-            <>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setPendingDelete(null)}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={confirmDelete}
-              >
-                Delete
-              </Button>
-            </>
-          }
-        >
-          <p className="text-sm text-muted-foreground">
-            “{pendingDelete.title}” will be permanently removed from the
-            marketplace. Its favorites will also be cleared.
-          </p>
-        </Modal>
-      ) : null}
     </ProtectedShell>
   );
 }

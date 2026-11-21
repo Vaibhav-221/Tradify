@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
-import { Heart, MapPin, PackageOpen } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Heart, MapPin, PackageOpen, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
 
+import { Modal } from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/components/prototype-provider";
 import {
@@ -29,13 +30,23 @@ export function ListingCard({
   actions,
   index = 0,
 }: ListingCardProps) {
-  const { wishlist, toggleWishlist, notify, user } = usePrototype();
+  const { wishlist, toggleWishlist, notify, user, deleteListing } =
+    usePrototype();
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const isSaved = wishlist.includes(listing.id);
+  const isOwner = listing.sellerId === user?.id;
 
   function handleWishlist() {
     const nextSaved = !wishlist.includes(listing.id);
     toggleWishlist(listing.id);
     notify(nextSaved ? "Added to favorites." : "Removed from favorites.");
+  }
+
+  function handleDelete() {
+    if (!isOwner) return;
+    deleteListing(listing.id);
+    setConfirmDelete(false);
+    notify("Listing deleted.");
   }
 
   return (
@@ -150,8 +161,54 @@ export function ListingCard({
           </motion.span>
         </div>
 
-        {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
+        {actions || isOwner ? (
+          <div className="flex flex-wrap items-center gap-2">
+            {actions}
+            {isOwner ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label={`Delete listing ${listing.title}`}
+                title="Delete listing"
+                onClick={() => setConfirmDelete(true)}
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
+      {confirmDelete ? (
+        <Modal
+          title="Delete this listing?"
+          onClose={() => setConfirmDelete(false)}
+          footer={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setConfirmDelete(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDelete}
+              >
+                Delete listing
+              </Button>
+            </>
+          }
+        >
+          <p className="text-sm text-muted-foreground">
+            “{listing.title}” will be permanently removed from the marketplace.
+            Its favorites will also be cleared.
+          </p>
+        </Modal>
+      ) : null}
     </motion.article>
   );
 }

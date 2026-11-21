@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
-import { ArrowLeft, Heart, MapPin, Pencil, ShieldAlert } from "lucide-react";
+import {
+  ArrowLeft,
+  Heart,
+  MapPin,
+  Pencil,
+  ShieldAlert,
+  Trash2,
+} from "lucide-react";
 import { motion } from "motion/react";
 
 import { Modal } from "@/components/modal";
@@ -17,7 +24,14 @@ import {
 } from "@/lib/marketplace";
 import type { ListingActionKind, ReportReason } from "@/lib/types";
 
-type Dialog = "contact" | "reserve" | "giveaway" | "exchange" | "report" | null;
+type Dialog =
+  | "contact"
+  | "reserve"
+  | "giveaway"
+  | "exchange"
+  | "report"
+  | "delete"
+  | null;
 
 const reportReasons: { value: ReportReason; label: string }[] = [
   { value: "spam", label: "Spam" },
@@ -51,6 +65,7 @@ function ListingDetailsContent() {
     wishlist,
     toggleWishlist,
     updateListing,
+    deleteListing,
     addListingAction,
     addReport,
     notify,
@@ -120,6 +135,14 @@ function ListingDetailsContent() {
   function toggleSaved() {
     toggleWishlist(id);
     notify(saved ? "Removed from favorites." : "Added to favorites.");
+  }
+
+  function confirmDeleteListing() {
+    if (!listing || !isOwner) return;
+    deleteListing(listing.id);
+    setDialog(null);
+    notify("Listing deleted.");
+    router.replace("/home");
   }
 
   if (!ready || !user) {
@@ -254,12 +277,22 @@ function ListingDetailsContent() {
             ) : null}
 
             {isOwner ? (
-              <Button asChild variant="outline" className="w-full">
-                <Link href={`/listings/${listing.id}/edit`}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Edit your listing
-                </Link>
-              </Button>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <Button asChild variant="outline">
+                  <Link href={`/listings/${listing.id}/edit`}>
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Edit your listing
+                  </Link>
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => setDialog("delete")}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete listing
+                </Button>
+              </div>
             ) : (
               <div className="grid gap-2 sm:grid-cols-2">
                 <Button
@@ -499,6 +532,35 @@ function ListingDetailsContent() {
               </Button>
             </div>
           </form>
+        </Modal>
+      ) : null}
+      {dialog === "delete" ? (
+        <Modal
+          title="Delete this listing?"
+          onClose={() => setDialog(null)}
+          footer={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDialog(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={confirmDeleteListing}
+              >
+                Delete listing
+              </Button>
+            </>
+          }
+        >
+          <p className="text-sm text-muted-foreground">
+            “{listing.title}” will be permanently removed from the marketplace.
+            Its favorites will also be cleared.
+          </p>
         </Modal>
       ) : null}
     </ProtectedShell>
