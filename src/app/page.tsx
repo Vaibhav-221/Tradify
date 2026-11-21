@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Reveal } from "@/components/reveal";
+import { LandingMarketplacePreview } from "@/components/landing-marketplace-preview";
 
 const features = [
   {
@@ -145,17 +146,17 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 pb-24 pt-24 sm:px-6 sm:pb-32 sm:pt-32 lg:px-8 lg:pt-40">
-          <Reveal className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-20 sm:px-6 sm:pb-28 sm:pt-28 lg:grid-cols-2 lg:gap-10 lg:px-8 lg:pb-32 lg:pt-32">
+          <Reveal className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
             <Badge
               variant="secondary"
-              className="mb-7 rounded-full border border-border bg-secondary px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur"
+              className="mb-7 rounded-full border border-border bg-secondary px-4 py-1.5 text-xs font-medium text-muted-foreground"
             >
               <Sparkles className="mr-1.5 h-3.5 w-3.5 text-primary" />
               Built for students, by students
             </Badge>
 
-            <h1 className="text-balance text-4xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-8xl">
+            <h1 className="text-balance text-4xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-6xl">
               Your campus.
               <br />
               <span className="text-muted-foreground">
@@ -163,12 +164,12 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-7 text-muted-foreground sm:text-lg">
+            <p className="mx-auto mt-7 max-w-xl text-balance text-base leading-7 text-muted-foreground sm:text-lg lg:mx-0">
               Buy, sell, exchange, or give away things with students around
               you. Tradify makes campus commerce simple, local, and trusted.
             </p>
 
-            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <Button
                 asChild
                 size="lg"
@@ -193,7 +194,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs text-muted-foreground">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs text-muted-foreground lg:justify-start">
               <div className="flex items-center gap-2">
                 <Check className="h-3.5 w-3.5 text-primary" />
                 Campus focused
@@ -211,65 +212,7 @@ export default function Home() {
             </div>
           </Reveal>
 
-          {/* Marketplace preview */}
-          <Reveal className="mx-auto mt-20 max-w-5xl" delay={0.1}>
-            <div className="relative rounded-2xl border border-border bg-card p-2">
-              <div className="rounded-xl border border-border bg-surface-secondary p-5 sm:p-8">
-                <div className="mb-7 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Campus Marketplace
-                    </p>
-
-                    <h2 className="mt-1.5 text-lg font-semibold tracking-tight">
-                      Discover something useful
-                    </h2>
-                  </div>
-
-                  <Badge
-                    variant="outline"
-                    className="border-border bg-secondary"
-                  >
-                    Your Campus
-                  </Badge>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  {[
-                    ["MacBook Stand", "₹450", "Electronics"],
-                    ["DSA Notes", "₹120", "Books"],
-                    ["Study Lamp", "FREE", "Hostel"],
-                    ["Cycle", "₹2,500", "Transport"],
-                  ].map(([name, price, category]) => (
-                    <Card
-                      key={name}
-                      className="overflow-hidden border-border bg-background transition-colors duration-200 hover:border-primary/30"
-                    >
-                      <div className="flex h-28 items-center justify-center bg-secondary">
-                        <Box className="h-8 w-8 text-muted-foreground/40" />
-                      </div>
-
-                      <CardContent className="p-4">
-                        <p className="truncate text-sm font-medium">
-                          {name}
-                        </p>
-
-                        <div className="mt-2.5 flex items-center justify-between">
-                          <span className="text-sm font-semibold">
-                            {price}
-                          </span>
-
-                          <span className="text-[11px] text-muted-foreground">
-                            {category}
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Reveal>
+          <LandingMarketplacePreview />
         </div>
       </section>
 
@@ -310,7 +253,7 @@ export default function Home() {
                   className="h-full"
                   delay={index * 0.05}
                 >
-                  <Card className="group h-full border-border bg-card transition-colors duration-200 hover:border-primary/30">
+                  <Card className="group h-full border-border bg-card transition-all duration-200 hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                     <CardHeader>
                       <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary transition-colors group-hover:bg-primary/10">
                         <Icon className="h-5 w-5 text-primary" />
@@ -367,7 +310,7 @@ export default function Home() {
                   className="h-full"
                   delay={index * 0.04}
                 >
-                  <Card className="h-full border-border bg-card transition-colors hover:border-primary/30">
+                  <Card className="h-full border-border bg-card transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                     <CardContent className="flex flex-col items-center justify-center p-7 text-center">
                       <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-secondary">
                         <Icon className="h-5 w-5 text-muted-foreground" />
@@ -421,7 +364,7 @@ export default function Home() {
             <div className="space-y-3">
               {steps.map((step, index) => (
                 <Reveal key={step.number} delay={index * 0.06}>
-                  <Card className="border-border bg-card transition-colors hover:border-primary/30">
+                  <Card className="border-border bg-card transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                     <CardContent className="flex gap-5 p-6 sm:p-7">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-xs font-semibold text-muted-foreground">
                         {step.number}
@@ -449,7 +392,7 @@ export default function Home() {
       <section className="border-t border-border py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <Card className="overflow-hidden border-border bg-card">
+            <Card className="overflow-hidden border-border bg-card transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
               <CardContent className="p-8 sm:p-12">
                 <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
                   <div>
@@ -469,7 +412,7 @@ export default function Home() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl border border-border bg-secondary p-5">
+                    <div className="rounded-xl border border-border bg-secondary p-5 transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                       <Users className="mb-3 h-5 w-5 text-primary" />
                       <p className="text-sm font-semibold">Student focused</p>
                       <p className="mt-1 text-xs text-muted-foreground">
@@ -477,7 +420,7 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-secondary p-5">
+                    <div className="rounded-xl border border-border bg-secondary p-5 transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                       <CircleDollarSign className="mb-3 h-5 w-5 text-primary" />
                       <p className="text-sm font-semibold">Better value</p>
                       <p className="mt-1 text-xs text-muted-foreground">
@@ -485,7 +428,7 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-secondary p-5">
+                    <div className="rounded-xl border border-border bg-secondary p-5 transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                       <Repeat2 className="mb-3 h-5 w-5 text-primary" />
                       <p className="text-sm font-semibold">Easy exchange</p>
                       <p className="mt-1 text-xs text-muted-foreground">
@@ -493,7 +436,7 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-secondary p-5">
+                    <div className="rounded-xl border border-border bg-secondary p-5 transition-all hover:border-primary/40 motion-safe:hover:-translate-y-0.5">
                       <ShieldCheck className="mb-3 h-5 w-5 text-primary" />
                       <p className="text-sm font-semibold">Campus first</p>
                       <p className="mt-1 text-xs text-muted-foreground">
