@@ -154,6 +154,11 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
         setListings(storeUpdateListing(listingId, updates));
       },
       deleteListing(listingId) {
+        const listing = listings.find((item) => item.id === listingId);
+        if (!user || listing?.sellerId !== user.id) {
+          notify("You can only delete your own listings.");
+          return;
+        }
         setListings(storeDeleteListing(listingId));
         setWishlist(getWishlist());
         setListingActions(getListingActions());
@@ -165,6 +170,13 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
         setLookingForRequests(storeAddLookingForRequest(request));
       },
       deleteLookingForRequest(requestId) {
+        const request = lookingForRequests.find(
+          (item) => item.id === requestId,
+        );
+        if (!user || request?.userId !== user.id) {
+          notify("You can only delete your own requests.");
+          return;
+        }
         setLookingForRequests(storeDeleteLookingForRequest(requestId));
       },
       addListingAction(action) {
